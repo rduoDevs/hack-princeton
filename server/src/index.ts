@@ -13,7 +13,7 @@ import {
   PlayerState,
 } from './game/types';
 
-const PORT = 3001;
+const PORT = 3003;
 const FILL_TIMEOUT_MS = 10_000; // 10s after first human joins
 
 const app = express();

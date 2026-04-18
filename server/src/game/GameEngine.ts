@@ -19,8 +19,8 @@ const ROLES: Role[] = ['Engineer', 'Medic', 'Navigator', 'Commander', 'Scientist
 const MAX_PLAYERS = 6;
 const TRUE_CAPACITY = 4;
 const TOTAL_ROUNDS = 6;
-const DISCUSSION_TIME = 30_000; // 30s
-const ACTION_TIME = 20_000;     // 20s
+const DISCUSSION_TIME = 15_000; // 15s
+const ACTION_TIME = 12_000;     // 12s
 
 export class GameEngine extends EventEmitter {
   public gameId: string;
@@ -40,10 +40,10 @@ export class GameEngine extends EventEmitter {
     super();
     this.gameId = uuidv4();
     this.ship = {
-      hull_integrity: 80,
-      oxygen: 80,
-      power: 80,
-      repair_parts: 30,
+      hull_integrity: 90,
+      oxygen: 90,
+      power: 85,
+      repair_parts: 35,
       round: 0,
     };
   }
@@ -246,7 +246,7 @@ export class GameEngine extends EventEmitter {
     }
 
     // Next round after a brief pause
-    setTimeout(() => this.beginRound(), 3000);
+    setTimeout(() => this.beginRound(), 2000);
   }
 
   private endGame(result: 'win' | 'loss', message: string) {
