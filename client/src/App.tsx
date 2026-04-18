@@ -25,8 +25,9 @@ function JoinScreen() {
 
     socket.once('connect', () => {
       setConnected(true)
+      // Store the name but don't mark as joined yet — wait for server to confirm our player
+      useGameStore.setState({ localPlayerName: trimmed })
       socket.emit('game:join', { name: trimmed, type: 'human' })
-      setJoined(socket.id ?? 'local', trimmed)
     })
 
     socket.once('connect_error', () => {
@@ -37,8 +38,8 @@ function JoinScreen() {
     // If already connected
     if (socket.connected) {
       setConnected(true)
+      useGameStore.setState({ localPlayerName: trimmed })
       socket.emit('game:join', { name: trimmed, type: 'human' })
-      setJoined(socket.id ?? 'local', trimmed)
     }
   }
 
@@ -178,14 +179,18 @@ export default function App() {
 
     socket.on('game:state', (state) => {
       setGameState(state)
-      // If server sends us our ID in state, sync it
-      const localName = useGameStore.getState().localPlayerName
+      const store = useGameStore.getState()
+      const localName = store.localPlayerName
       if (localName) {
         const self = state.players.find(
           (p: any) => p.name === localName && p.type === 'human'
         )
         if (self) {
-          useGameStore.setState({ localPlayerId: self.id })
+          useGameStore.setState({ localPlayerId: self.id, joined: true })
+        }
+        // If game is over and we're not in the player list, boot back to join screen
+        if (state.phase === 'over' && !self) {
+          useGameStore.setState({ joined: false, localPlayerName: null })
         }
       }
     })

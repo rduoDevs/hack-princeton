@@ -92,6 +92,16 @@ function wireEngineEvents() {
 
   engine.on('game:over', (payload) => {
     io.emit('game:over', payload);
+    // Auto-reset to fresh lobby after 30s so new clients can join
+    setTimeout(() => {
+      engine = new GameEngine();
+      aiAgents.clear();
+      firstJoinTime = null;
+      fillTimer = null;
+      wireEngineEvents();
+      io.emit('game:state', engine.getPublicState());
+      console.log('[reset] New game ready.');
+    }, 30_000);
   });
 
   engine.on('playerAdded', (player: PlayerState) => {

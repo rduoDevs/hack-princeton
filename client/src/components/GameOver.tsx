@@ -3,9 +3,13 @@ import socket from '../socket'
 
 export default function GameOver() {
   const gameState = useGameStore((s) => s.gameState)
+  const localPlayerId = useGameStore((s) => s.localPlayerId)
   const reset = useGameStore((s) => s.reset)
 
+  // Only show if we're actually in this game and it ran at least one round
   if (gameState?.phase !== 'over') return null
+  if (!gameState.round || gameState.round < 1) return null
+  if (localPlayerId && !gameState.players.some(p => p.id === localPlayerId)) return null
 
   const outcome = gameState.outcome
   const isWin = outcome?.result === 'win'
