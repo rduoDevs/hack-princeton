@@ -1,18 +1,21 @@
 import { useGameStore } from '../store/gameStore'
 import socket from '../socket'
 
-export default function GameOver() {
-  const gameState = useGameStore((s) => s.gameState)
-  const localPlayerId = useGameStore((s) => s.localPlayerId)
-  const reset = useGameStore((s) => s.reset)
+const FONT    = "'Press Start 2P', monospace"
+const SCANLINE = 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.12) 3px, rgba(0,0,0,0.12) 4px)'
 
-  // Only show if we're actually in this game and it ran at least one round
+export default function GameOver() {
+  const gameState    = useGameStore((s) => s.gameState)
+  const localPlayerId = useGameStore((s) => s.localPlayerId)
+  const reset        = useGameStore((s) => s.reset)
+
   if (gameState?.phase !== 'over') return null
   if (!gameState.round || gameState.round < 1) return null
   if (localPlayerId && !gameState.players.some(p => p.id === localPlayerId)) return null
 
-  const outcome = gameState.outcome
-  const isWin = outcome?.result === 'win'
+  const outcome   = gameState.outcome
+  const isWin     = outcome?.result === 'win'
+  const mainColor = isWin ? '#00ff88' : '#ff3333'
 
   const handlePlayAgain = () => {
     reset()
@@ -25,68 +28,66 @@ export default function GameOver() {
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0,0,0,0.88)',
+        background: 'rgba(2,2,10,0.93)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         zIndex: 100,
         pointerEvents: 'all',
+        fontFamily: FONT,
+        backgroundImage: SCANLINE,
       }}
     >
       <div
         style={{
-          background: 'rgba(10,10,20,0.95)',
-          border: `2px solid ${isWin ? '#00e676' : '#ef5350'}`,
-          borderRadius: 12,
-          padding: '40px 60px',
+          background: 'rgba(4,4,16,0.98)',
+          border: `3px solid ${mainColor}`,
+          padding: '38px 52px',
           textAlign: 'center',
-          maxWidth: 480,
-          boxShadow: `0 0 60px ${isWin ? 'rgba(0,230,118,0.3)' : 'rgba(239,83,80,0.3)'}`,
+          maxWidth: 520,
+          boxShadow: `0 0 50px ${mainColor}22`,
         }}
       >
-        <div
-          style={{
-            fontSize: 11,
-            letterSpacing: 4,
-            color: isWin ? '#00e676' : '#ef5350',
-            marginBottom: 16,
-          }}
-        >
+        {/* Corner pixels */}
+        {[{ top: 5, left: 5 }, { top: 5, right: 5 }, { bottom: 5, left: 5 }, { bottom: 5, right: 5 }].map((pos, i) => (
+          <div key={i} style={{ position: 'absolute', width: 9, height: 9, background: mainColor, ...pos }} />
+        ))}
+
+        <div style={{ fontSize: 8, color: mainColor, letterSpacing: 3, marginBottom: 18 }}>
           MISSION {isWin ? 'COMPLETE' : 'FAILED'}
         </div>
         <div
           style={{
-            fontSize: 42,
-            fontWeight: 700,
-            color: '#e0e0e0',
-            marginBottom: 24,
-            textShadow: `0 0 20px ${isWin ? '#00e676' : '#ef5350'}`,
+            fontSize: 26,
+            color: mainColor,
+            marginBottom: 26,
+            textShadow: `0 0 24px ${mainColor}88`,
+            letterSpacing: 2,
           }}
         >
           {isWin ? 'SURVIVED' : 'LOST'}
         </div>
 
         {outcome?.message && (
-          <div style={{ fontSize: 12, color: '#aaa', marginBottom: 24, lineHeight: 1.6 }}>
+          <div style={{ fontSize: 8, color: '#778899', marginBottom: 22, lineHeight: 2.2, maxWidth: 420 }}>
             {outcome.message}
           </div>
         )}
 
         {outcome?.survivors && outcome.survivors.length > 0 && (
-          <div style={{ marginBottom: 28 }}>
-            <div style={{ fontSize: 10, color: '#555', letterSpacing: 2, marginBottom: 8 }}>SURVIVORS</div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}>
+          <div style={{ marginBottom: 26 }}>
+            <div style={{ fontSize: 7, color: '#334455', letterSpacing: 2, marginBottom: 8 }}>SURVIVORS</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
               {outcome.survivors.map((name, i) => (
                 <span
                   key={i}
                   style={{
-                    background: 'rgba(0,230,118,0.1)',
-                    border: '1px solid rgba(0,230,118,0.3)',
-                    color: '#00e676',
-                    padding: '3px 10px',
-                    borderRadius: 12,
-                    fontSize: 11,
+                    background: 'rgba(0,255,136,0.07)',
+                    border: '2px solid #00ff8844',
+                    color: '#00ff88',
+                    padding: '3px 9px',
+                    fontSize: 7,
                   }}
                 >
                   {name}
@@ -99,22 +100,15 @@ export default function GameOver() {
         <button
           onClick={handlePlayAgain}
           style={{
-            background: 'rgba(0,191,255,0.15)',
-            border: '1px solid rgba(0,191,255,0.5)',
-            color: '#00bfff',
-            padding: '10px 32px',
-            borderRadius: 6,
-            fontSize: 12,
+            background: 'rgba(0,229,255,0.07)',
+            border: '2px solid #00e5ff',
+            color: '#00e5ff',
+            padding: '11px 30px',
+            fontSize: 8,
             cursor: 'pointer',
-            fontFamily: 'inherit',
+            fontFamily: FONT,
             letterSpacing: 2,
-            transition: 'all 0.2s',
-          }}
-          onMouseEnter={(e) => {
-            (e.target as HTMLButtonElement).style.background = 'rgba(0,191,255,0.3)'
-          }}
-          onMouseLeave={(e) => {
-            (e.target as HTMLButtonElement).style.background = 'rgba(0,191,255,0.15)'
+            textShadow: '0 0 8px rgba(0,229,255,0.7)',
           }}
         >
           PLAY AGAIN

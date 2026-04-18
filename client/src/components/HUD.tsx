@@ -7,18 +7,19 @@ import PhaseTimer from './PhaseTimer'
 import GameOver from './GameOver'
 import StoryAlert from './StoryAlert'
 
+const FONT = "'Press Start 2P', monospace"
+const SCANLINE = 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px)'
+
 export default function HUD() {
   const gameState = useGameStore((s) => s.gameState)
-  const phaseInfo = useGameStore((s) => s.phaseInfo)
-
   const phase = gameState?.phase ?? 'lobby'
   const round = gameState?.round ?? 0
 
   const phaseColor =
-    phase === 'discussion' ? '#00bfff'
-    : phase === 'action' ? '#ffd700'
-    : phase === 'resolution' ? '#ff6b35'
-    : '#aaa'
+    phase === 'discussion'  ? '#00e5ff'
+    : phase === 'action'    ? '#ffd700'
+    : phase === 'resolution'? '#ff8833'
+    : '#556677'
 
   return (
     <div
@@ -27,41 +28,38 @@ export default function HUD() {
         inset: 0,
         pointerEvents: 'none',
         zIndex: 10,
-        fontFamily: "'Space Mono', monospace",
+        fontFamily: FONT,
       }}
     >
       {/* Top bar */}
       <div
         style={{
           position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 48,
-          background: 'rgba(0,0,0,0.75)',
-          borderBottom: '1px solid rgba(0,191,255,0.2)',
+          top: 0, left: 0, right: 0,
+          height: 44,
+          background: 'rgba(4,4,16,0.96)',
+          borderBottom: '2px solid #001533',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0 20px',
+          padding: '0 14px',
+          backgroundImage: SCANLINE,
         }}
       >
-        <div style={{ fontSize: 14, fontWeight: 700, color: '#00bfff', letterSpacing: 3, textShadow: '0 0 10px #00bfff' }}>
-          HAIL MARY PROTOCOL
+        <div style={{ fontSize: 10, color: '#00e5ff', letterSpacing: 1, textShadow: '0 0 12px rgba(0,229,255,0.7)' }}>
+          HAIL MARY
         </div>
-        <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-          <div style={{ fontSize: 10, color: '#555', letterSpacing: 1 }}>
-            ROUND <span style={{ color: '#e0e0e0', fontSize: 14, fontWeight: 700 }}>{round}</span>
+        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
+          <div style={{ fontSize: 8, color: '#334455' }}>
+            RND&nbsp;<span style={{ color: '#e0e0e0', fontSize: 12 }}>{round}</span>
           </div>
           <div
             style={{
-              fontSize: 10,
+              fontSize: 8,
               color: phaseColor,
-              letterSpacing: 2,
-              border: `1px solid ${phaseColor}44`,
-              padding: '3px 10px',
-              borderRadius: 3,
-              textShadow: `0 0 6px ${phaseColor}`,
+              border: `2px solid ${phaseColor}`,
+              padding: '3px 8px',
+              textShadow: `0 0 8px ${phaseColor}66`,
             }}
           >
             {phase.toUpperCase()}
@@ -69,23 +67,19 @@ export default function HUD() {
         </div>
       </div>
 
-      {/* Story alert banner */}
+      {/* Story event banner */}
       {gameState?.storyAlert && (
         <StoryAlert key={gameState.round} alert={gameState.storyAlert} />
       )}
 
-      {/* Side panels */}
       <ResourceBars />
       <PlayerCards />
 
-      {/* Bottom panels */}
       <div style={{ pointerEvents: 'all' }}>
         <ChatPanel />
         <ActionMenu />
       </div>
       <PhaseTimer />
-
-      {/* Game over overlay */}
       <GameOver />
     </div>
   )

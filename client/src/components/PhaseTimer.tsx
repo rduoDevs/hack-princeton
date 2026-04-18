@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useGameStore } from '../store/gameStore'
 
+const FONT    = "'Press Start 2P', monospace"
+const SCANLINE = 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px)'
+
 export default function PhaseTimer() {
   const phaseInfo = useGameStore((s) => s.phaseInfo)
   const [timeLeft, setTimeLeft] = useState(0)
@@ -8,54 +11,61 @@ export default function PhaseTimer() {
   useEffect(() => {
     if (!phaseInfo) return
     setTimeLeft(phaseInfo.timeLeft)
-
     const interval = setInterval(() => {
       setTimeLeft((t) => Math.max(0, t - 1))
     }, 1000)
-
     return () => clearInterval(interval)
   }, [phaseInfo])
 
   if (!phaseInfo) return null
 
   const phaseColor =
-    phaseInfo.phase === 'discussion' ? '#00bfff'
-    : phaseInfo.phase === 'action' ? '#ffd700'
-    : '#ff6b35'
+    phaseInfo.phase === 'discussion' ? '#00e5ff'
+    : phaseInfo.phase === 'action'   ? '#ffd700'
+    : '#ff8833'
 
-  const urgency = timeLeft <= 10
+  const urgent = timeLeft <= 10
+  const displayColor = urgent ? '#ff3333' : phaseColor
 
   return (
     <div
       style={{
         position: 'absolute',
-        bottom: 12,
-        right: 12,
-        background: 'rgba(0,0,0,0.75)',
-        border: `1px solid ${urgency ? '#ef5350' : 'rgba(255,255,255,0.15)'}`,
-        borderRadius: 6,
+        bottom: 10,
+        right: 10,
+        background: 'rgba(4,4,16,0.96)',
+        border: `2px solid ${displayColor}`,
         padding: '10px 16px',
         textAlign: 'center',
-        minWidth: 120,
+        minWidth: 115,
         pointerEvents: 'none',
+        fontFamily: FONT,
+        backgroundImage: SCANLINE,
+        boxShadow: urgent ? `0 0 20px ${displayColor}33` : 'none',
+        animation: urgent ? 'timerFlash 0.5s steps(1) infinite' : 'none',
       }}
     >
-      <div style={{ fontSize: 9, color: phaseColor, letterSpacing: 2, marginBottom: 4 }}>
+      <style>{`
+        @keyframes timerFlash {
+          0%,  49% { border-color: #ff3333; }
+          50%, 100% { border-color: #330000; }
+        }
+      `}</style>
+      <div style={{ fontSize: 7, color: phaseColor, letterSpacing: 2, marginBottom: 6 }}>
         {phaseInfo.phase.toUpperCase()}
       </div>
       <div
         style={{
-          fontSize: 28,
-          fontWeight: 700,
-          color: urgency ? '#ef5350' : '#e0e0e0',
+          fontSize: 30,
+          color: displayColor,
           lineHeight: 1,
-          textShadow: urgency ? '0 0 12px #ef5350' : 'none',
-          transition: 'color 0.3s',
+          textShadow: `0 0 14px ${displayColor}88`,
+          fontVariantNumeric: 'tabular-nums',
         }}
       >
-        {timeLeft}
+        {String(timeLeft).padStart(2, '0')}
       </div>
-      <div style={{ fontSize: 9, color: '#555', marginTop: 4 }}>SECONDS</div>
+      <div style={{ fontSize: 6, color: '#223344', marginTop: 5, letterSpacing: 2 }}>SEC</div>
     </div>
   )
 }

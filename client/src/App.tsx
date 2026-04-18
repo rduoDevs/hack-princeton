@@ -1,27 +1,27 @@
 import { useEffect, useState } from 'react'
 import socket from './socket'
 import { useGameStore } from './store/gameStore'
-import ShipSceneCanvas from './three/ShipSceneCanvas'
+import PixiSceneCanvas from './pixi/PixiSceneCanvas'
 import HUD from './components/HUD'
 
-// ─── Join Screen ────────────────────────────────────────────────────────────
+const PIXEL_FONT = "'Press Start 2P', monospace"
+
+// ─── Join Screen ─────────────────────────────────────────────────────────────
 
 function JoinScreen() {
   const [name, setName] = useState('')
   const [connecting, setConnecting] = useState(false)
   const [error, setError] = useState('')
   const setConnected = useGameStore((s) => s.setConnected)
-  const setJoined = useGameStore((s) => s.setJoined)
+  const setJoined    = useGameStore((s) => s.setJoined)
 
   const join = () => {
     const trimmed = name.trim()
-    if (!trimmed) { setError('Enter a name to join.'); return }
+    if (!trimmed) { setError('CALLSIGN REQUIRED'); return }
     setConnecting(true)
     setError('')
 
-    if (!socket.connected) {
-      socket.connect()
-    }
+    if (!socket.connected) socket.connect()
 
     socket.once('connect', () => {
       setConnected(true)
@@ -31,10 +31,9 @@ function JoinScreen() {
 
     socket.once('connect_error', () => {
       setConnecting(false)
-      setError('Could not connect to server (localhost:3001)')
+      setError('CONNECTION FAILED — SERVER OFFLINE?')
     })
 
-    // If already connected
     if (socket.connected) {
       setConnected(true)
       socket.emit('game:join', { name: trimmed, type: 'human' })
@@ -42,9 +41,7 @@ function JoinScreen() {
     }
   }
 
-  const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') join()
-  }
+  const handleKey = (e: React.KeyboardEvent) => { if (e.key === 'Enter') join() }
 
   return (
     <div
@@ -55,79 +52,81 @@ function JoinScreen() {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#0a0a0f',
+        background: '#060610',
+        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)',
         zIndex: 200,
-        fontFamily: "'Space Mono', monospace",
+        fontFamily: PIXEL_FONT,
       }}
     >
-      {/* Animated starfield background hint */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `radial-gradient(circle at 50% 50%, rgba(0,191,255,0.04) 0%, transparent 70%)`,
-          pointerEvents: 'none',
-        }}
-      />
-
       <div
         style={{
           position: 'relative',
-          background: 'rgba(10,10,20,0.95)',
-          border: '1px solid rgba(0,191,255,0.4)',
-          borderRadius: 10,
-          padding: '48px 56px',
+          background: 'rgba(4,4,20,0.98)',
+          border: '3px solid #00e5ff',
+          padding: '42px 52px',
           textAlign: 'center',
-          maxWidth: 400,
-          width: '90%',
-          boxShadow: '0 0 60px rgba(0,191,255,0.1)',
+          maxWidth: 460,
+          width: '92%',
+          boxShadow: '0 0 0 1px #001533, 0 0 80px rgba(0,229,255,0.12)',
         }}
       >
-        <div style={{ fontSize: 10, color: '#555', letterSpacing: 4, marginBottom: 12 }}>
-          MULTIPLAYER SURVIVAL
+        {/* Pixel corner accents */}
+        {[
+          { top: 5, left: 5 }, { top: 5, right: 5 },
+          { bottom: 5, left: 5 }, { bottom: 5, right: 5 },
+        ].map((pos, i) => (
+          <div key={i} style={{ position: 'absolute', width: 9, height: 9, background: '#00e5ff', ...pos }} />
+        ))}
+
+        <div style={{ fontSize: 7, color: '#223344', letterSpacing: 3, marginBottom: 18 }}>
+          // MISSION BRIEFING //
         </div>
         <div
           style={{
-            fontSize: 22,
-            fontWeight: 700,
-            color: '#00bfff',
-            letterSpacing: 3,
+            fontSize: 20,
+            color: '#00e5ff',
+            letterSpacing: 2,
             marginBottom: 8,
-            textShadow: '0 0 20px rgba(0,191,255,0.6)',
+            textShadow: '0 0 24px rgba(0,229,255,0.7)',
           }}
         >
           HAIL MARY
         </div>
-        <div style={{ fontSize: 14, color: '#4fc3f7', letterSpacing: 4, marginBottom: 36 }}>
+        <div style={{ fontSize: 10, color: '#334455', letterSpacing: 4, marginBottom: 10 }}>
           PROTOCOL
         </div>
+        <div style={{ fontSize: 7, color: '#ff4444', letterSpacing: 1, marginBottom: 34 }}>
+          AI ALIGNMENT CRISIS // SURVIVE
+        </div>
 
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 12 }}>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={handleKey}
-            placeholder="Enter callsign..."
+            placeholder=">_ ENTER CALLSIGN"
             maxLength={20}
             autoFocus
             style={{
               width: '100%',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(0,191,255,0.3)',
-              borderRadius: 5,
-              color: '#e0e0e0',
-              padding: '10px 14px',
-              fontSize: 13,
+              background: 'rgba(0,229,255,0.04)',
+              border: '2px solid rgba(0,229,255,0.35)',
+              color: '#99ddee',
+              padding: '11px 14px',
+              fontSize: 9,
               outline: 'none',
-              fontFamily: 'inherit',
+              fontFamily: PIXEL_FONT,
               textAlign: 'center',
+              letterSpacing: 1,
             }}
           />
         </div>
 
         {error && (
-          <div style={{ fontSize: 10, color: '#ef5350', marginBottom: 12 }}>{error}</div>
+          <div style={{ fontSize: 7, color: '#ff3333', marginBottom: 10, letterSpacing: 1 }}>
+            [ERR] {error}
+          </div>
         )}
 
         <button
@@ -135,45 +134,42 @@ function JoinScreen() {
           disabled={connecting}
           style={{
             width: '100%',
-            background: connecting ? 'rgba(0,191,255,0.05)' : 'rgba(0,191,255,0.15)',
-            border: '1px solid rgba(0,191,255,0.5)',
-            color: connecting ? '#555' : '#00bfff',
-            padding: '11px',
-            borderRadius: 5,
-            fontSize: 12,
+            background: connecting ? 'transparent' : 'rgba(0,229,255,0.08)',
+            border: `2px solid ${connecting ? '#1a2a3a' : '#00e5ff'}`,
+            color: connecting ? '#223344' : '#00e5ff',
+            padding: '12px',
+            fontSize: 8,
             cursor: connecting ? 'not-allowed' : 'pointer',
-            fontFamily: 'inherit',
+            fontFamily: PIXEL_FONT,
             letterSpacing: 2,
-            transition: 'all 0.2s',
+            textShadow: connecting ? 'none' : '0 0 10px rgba(0,229,255,0.8)',
           }}
         >
-          {connecting ? 'CONNECTING...' : 'JOIN AS HUMAN'}
+          {connecting ? '// CONNECTING...' : '[ JOIN AS HUMAN CREW ]'}
         </button>
 
-        <div style={{ marginTop: 24, fontSize: 9, color: '#333' }}>
-          Connecting to localhost:3001
+        <div style={{ marginTop: 22, fontSize: 6, color: '#1a2533' }}>
+          localhost:3003
         </div>
       </div>
     </div>
   )
 }
 
-// ─── App Root ────────────────────────────────────────────────────────────────
+// ─── App Root ─────────────────────────────────────────────────────────────────
 
 export default function App() {
-  const joined = useGameStore((s) => s.joined)
-  const gameState = useGameStore((s) => s.gameState)
-  const setConnected = useGameStore((s) => s.setConnected)
-  const setJoined = useGameStore((s) => s.setJoined)
-  const setGameState = useGameStore((s) => s.setGameState)
-  const setPhaseInfo = useGameStore((s) => s.setPhaseInfo)
-  const addMessage = useGameStore((s) => s.addMessage)
+  const joined        = useGameStore((s) => s.joined)
+  const setConnected  = useGameStore((s) => s.setConnected)
+  const setJoined     = useGameStore((s) => s.setJoined)
+  const setGameState  = useGameStore((s) => s.setGameState)
+  const setPhaseInfo  = useGameStore((s) => s.setPhaseInfo)
+  const addMessage    = useGameStore((s) => s.addMessage)
   const setActionResults = useGameStore((s) => s.setActionResults)
-  const addWhisper = useGameStore((s) => s.addWhisper)
+  const addWhisper    = useGameStore((s) => s.addWhisper)
 
   useEffect(() => {
-    // Socket event listeners
-    socket.on('connect', () => setConnected(true))
+    socket.on('connect',    () => setConnected(true))
     socket.on('disconnect', () => setConnected(false))
 
     socket.on('game:state', (state) => {
@@ -183,42 +179,31 @@ export default function App() {
         const self = state.players.find(
           (p: any) => p.name === localName && p.type === 'human'
         )
-        if (self) {
-          useGameStore.setState({ localPlayerId: self.id })
-        }
+        if (self) useGameStore.setState({ localPlayerId: self.id })
       }
     })
 
-    socket.on('game:phase', (info) => {
-      setPhaseInfo(info)
-      // Also reset action sent state when phase changes
-    })
+    socket.on('game:phase', (info) => setPhaseInfo(info))
 
-    socket.on('game:message', (msg) => {
-      addMessage(msg)
-    })
+    socket.on('game:message', (msg) => addMessage(msg))
 
     socket.on('game:action_result', (payload) => {
       setActionResults(payload.results ?? [])
-      // Append results as system messages
       if (payload.results) {
         payload.results.forEach((r: any) => {
           addMessage({
             playerId: '__system__',
             playerName: 'SYSTEM',
-            text: `[Round ${payload.round}] ${r.result ?? JSON.stringify(r)}`,
+            text: `[RND ${payload.round}] ${r.result ?? JSON.stringify(r)}`,
             timestamp: Date.now(),
           })
         })
       }
     })
 
-    socket.on('game:whisper', (whisper) => {
-      addWhisper(whisper)
-    })
+    socket.on('game:whisper', (whisper) => addWhisper(whisper))
 
     socket.on('game:over', (payload) => {
-      // Merge outcome into current game state
       const current = useGameStore.getState().gameState
       if (current) {
         setGameState({
@@ -241,17 +226,15 @@ export default function App() {
     }
   }, [])
 
-  const showGame = joined
-
   return (
-    <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#0a0a0f' }}>
-      {showGame && (
+    <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', background: '#060610' }}>
+      {joined && (
         <>
-          <ShipSceneCanvas />
+          <PixiSceneCanvas />
           <HUD />
         </>
       )}
-      {!showGame && <JoinScreen />}
+      {!joined && <JoinScreen />}
     </div>
   )
 }

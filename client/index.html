@@ -6,17 +6,44 @@
     <title>HAIL MARY PROTOCOL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet" />
     <style>
       *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       html, body, #root {
         width: 100%;
         height: 100%;
         overflow: hidden;
-        background: #0a0a0f;
-        font-family: 'Space Mono', monospace;
+        background: #060610;
+        font-family: 'Press Start 2P', monospace;
         color: #e0e0e0;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
       }
+      button { cursor: pointer; }
+      input  { cursor: text; }
+      select { cursor: pointer; }
+
+      /* Global CRT scanline overlay */
+      body::after {
+        content: '';
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(0, 0, 0, 0.045) 3px,
+          rgba(0, 0, 0, 0.045) 4px
+        );
+        pointer-events: none;
+        z-index: 9998;
+      }
+
+      /* Scrollbar pixel style */
+      ::-webkit-scrollbar { width: 4px; }
+      ::-webkit-scrollbar-track { background: #060610; }
+      ::-webkit-scrollbar-thumb { background: #00e5ff44; }
+      ::-webkit-scrollbar-thumb:hover { background: #00e5ff88; }
     </style>
   </head>
   <body>

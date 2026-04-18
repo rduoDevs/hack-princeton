@@ -2,47 +2,50 @@ import { useEffect, useRef, useState } from 'react'
 import { useGameStore } from '../store/gameStore'
 import socket from '../socket'
 
+const FONT    = "'Press Start 2P', monospace"
+const BODY    = "'VT323', 'Courier New', monospace"
+const SCANLINE = 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px)'
+
 export default function ChatPanel() {
-  const messages = useGameStore((s) => s.messages)
-  const whispers = useGameStore((s) => s.whispers)
-  const phase = useGameStore((s) => s.gameState?.phase)
-  const localId = useGameStore((s) => s.localPlayerId)
-  const players = useGameStore((s) => s.gameState?.players ?? [])
-  const activeWhisperTarget = useGameStore((s) => s.activeWhisperTarget)
-  const setActiveWhisperTarget = useGameStore((s) => s.setActiveWhisperTarget)
+  const messages          = useGameStore((s) => s.messages)
+  const whispers          = useGameStore((s) => s.whispers)
+  const phase             = useGameStore((s) => s.gameState?.phase)
+  const localId           = useGameStore((s) => s.localPlayerId)
+  const players           = useGameStore((s) => s.gameState?.players ?? [])
+  const activeWhispTgt    = useGameStore((s) => s.activeWhisperTarget)
+  const setActiveWhispTgt = useGameStore((s) => s.setActiveWhisperTarget)
 
-  const [tab, setTab] = useState<'all' | 'whisper'>('all')
-  const [text, setText] = useState('')
-  const [whisperTarget, setWhisperTarget] = useState<string>('')
-  const bottomRef = useRef<HTMLDivElement>(null)
+  const [tab, setTab]             = useState<'all' | 'whisper'>('all')
+  const [text, setText]           = useState('')
+  const [whisperTarget, setWTgt]  = useState('')
+  const bottomRef                 = useRef<HTMLDivElement>(null)
 
-  const canChat = phase === 'discussion'
+  const canChat    = phase === 'discussion'
   const canWhisper = phase === 'discussion' || phase === 'action'
 
-  // Auto-switch to whisper tab when activeWhisperTarget is set from PlayerCards
   useEffect(() => {
-    if (activeWhisperTarget) {
+    if (activeWhispTgt) {
       setTab('whisper')
-      setWhisperTarget(activeWhisperTarget)
-      setActiveWhisperTarget(null)
+      setWTgt(activeWhispTgt)
+      setActiveWhispTgt(null)
     }
-  }, [activeWhisperTarget, setActiveWhisperTarget])
+  }, [activeWhispTgt, setActiveWhispTgt])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, whispers, tab])
 
   const sendPublic = () => {
-    const trimmed = text.trim()
-    if (!trimmed || !canChat) return
-    socket.emit('game:message', { text: trimmed })
+    const t = text.trim()
+    if (!t || !canChat) return
+    socket.emit('game:message', { text: t })
     setText('')
   }
 
   const sendWhisper = () => {
-    const trimmed = text.trim()
-    if (!trimmed || !canWhisper || !whisperTarget) return
-    socket.emit('game:whisper', { toPlayerId: whisperTarget, text: trimmed })
+    const t = text.trim()
+    if (!t || !canWhisper || !whisperTarget) return
+    socket.emit('game:whisper', { toPlayerId: whisperTarget, text: t })
     setText('')
   }
 
@@ -50,37 +53,24 @@ export default function ChatPanel() {
     if (e.key === 'Enter') tab === 'all' ? sendPublic() : sendWhisper()
   }
 
-  const myWhispers = whispers.filter(
-    w => w.fromPlayerId === localId || w.toPlayerId === localId
-  )
-
+  const myWhispers   = whispers.filter(w => w.fromPlayerId === localId || w.toPlayerId === localId)
   const otherPlayers = players.filter(p => p.id !== localId)
-
-  const tabStyle = (active: boolean, color: string) => ({
-    fontSize: 9,
-    letterSpacing: 2,
-    padding: '3px 8px',
-    borderRadius: 3,
-    border: `1px solid ${active ? color : 'transparent'}`,
-    color: active ? color : '#555',
-    background: active ? `${color}18` : 'transparent',
-    cursor: 'pointer' as const,
-    fontFamily: 'inherit',
-  })
 
   return (
     <div
       style={{
         position: 'absolute',
-        bottom: 12,
-        left: 12,
-        width: 300,
-        background: 'rgba(0,0,0,0.8)',
-        border: '1px solid rgba(0,191,255,0.3)',
-        borderRadius: 6,
-        overflow: 'hidden',
+        bottom: 10,
+        left: 10,
+        width: 295,
+        background: 'rgba(4,4,16,0.96)',
+        border: '2px solid #001533',
+        borderLeft: '2px solid #00e5ff',
         display: 'flex',
         flexDirection: 'column',
+        fontFamily: FONT,
+        backgroundImage: SCANLINE,
+        overflow: 'hidden',
       }}
     >
       {/* Header + tabs */}
@@ -88,44 +78,59 @@ export default function ChatPanel() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '5px 10px',
-        borderBottom: '1px solid rgba(255,255,255,0.06)',
+        padding: '5px 8px',
+        borderBottom: '1px solid #0d1e2e',
       }}>
-        <span style={{ fontSize: 9, color: '#00bfff', letterSpacing: 2 }}>COMMS</span>
+        <span style={{ fontSize: 7, color: '#00e5ff', textShadow: '0 0 6px rgba(0,229,255,0.5)' }}>COMMS</span>
         <div style={{ display: 'flex', gap: 4 }}>
-          <button style={tabStyle(tab === 'all', '#00bfff')} onClick={() => setTab('all')}>ALL</button>
-          <button style={tabStyle(tab === 'whisper', '#ce93d8')} onClick={() => setTab('whisper')}>
-            WHISPER {myWhispers.length > 0 ? `(${myWhispers.length})` : ''}
-          </button>
+          {(['all', 'whisper'] as const).map((t) => {
+            const active = tab === t
+            const color  = t === 'all' ? '#00e5ff' : '#cc88ff'
+            return (
+              <button
+                key={t}
+                onClick={() => setTab(t)}
+                style={{
+                  fontSize: 6,
+                  padding: '2px 5px',
+                  background: active ? `${color}15` : 'transparent',
+                  border: `1px solid ${active ? color : '#1a2a3a'}`,
+                  color: active ? color : '#334455',
+                  cursor: 'pointer',
+                  fontFamily: FONT,
+                }}
+              >
+                {t === 'all' ? 'ALL' : `[W]${myWhispers.length > 0 ? `(${myWhispers.length})` : ''}`}
+              </button>
+            )
+          })}
         </div>
       </div>
 
       {/* Message log */}
-      <div style={{ height: 150, overflowY: 'auto', padding: '6px 10px', display: 'flex', flexDirection: 'column', gap: 4 }}>
-        {tab === 'all' && (
+      <div style={{ height: 132, overflowY: 'auto', padding: '5px 8px', display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {tab === 'all' ? (
           messages.length === 0
-            ? <div style={{ color: '#444', fontSize: 10, fontStyle: 'italic' }}>No transmissions yet.</div>
+            ? <div style={{ color: '#223344', fontSize: 7 }}>NO TRANSMISSIONS</div>
             : messages.map((m, i) => (
-              <div key={i} style={{ fontSize: 10, lineHeight: 1.4 }}>
-                <span style={{ color: m.playerId === localId ? '#00bfff' : m.playerId === '__system__' ? '#666' : '#ffd700', marginRight: 4 }}>
-                  [{m.playerName}]
+              <div key={i} style={{ fontFamily: BODY, fontSize: 14, lineHeight: 1.3 }}>
+                <span style={{ color: m.playerId === localId ? '#00e5ff' : m.playerId === '__system__' ? '#334455' : '#ffd700' }}>
+                  [{m.playerName}]&nbsp;
                 </span>
-                <span style={{ color: '#ccc' }}>{m.text}</span>
+                <span style={{ color: '#8899aa' }}>{m.text}</span>
               </div>
             ))
-        )}
-        {tab === 'whisper' && (
+        ) : (
           myWhispers.length === 0
-            ? <div style={{ color: '#444', fontSize: 10, fontStyle: 'italic' }}>No private transmissions.</div>
+            ? <div style={{ color: '#223344', fontSize: 7 }}>NO PRIVATE MSGS</div>
             : myWhispers.map((w, i) => {
               const isMine = w.fromPlayerId === localId
-              const counterpart = isMine ? w.toPlayerId : w.fromPlayerId
-              const counterpartPlayer = players.find(p => p.id === counterpart)
-              const label = isMine ? `YOU → ${counterpartPlayer?.name ?? '?'}` : `${w.fromPlayerName} → YOU`
+              const other  = players.find(p => p.id === (isMine ? w.toPlayerId : w.fromPlayerId))
+              const label  = isMine ? `YOU>>${other?.name ?? '?'}` : `${w.fromPlayerName}>>YOU`
               return (
-                <div key={i} style={{ fontSize: 10, lineHeight: 1.4 }}>
-                  <span style={{ color: '#ce93d8', marginRight: 4 }}>[{label}]</span>
-                  <span style={{ color: '#e0d0e8' }}>{w.text}</span>
+                <div key={i} style={{ fontFamily: BODY, fontSize: 14, lineHeight: 1.3 }}>
+                  <span style={{ color: '#cc88ff' }}>[{label}]&nbsp;</span>
+                  <span style={{ color: '#ccbbdd' }}>{w.text}</span>
                 </div>
               )
             })
@@ -135,26 +140,25 @@ export default function ChatPanel() {
 
       {/* Whisper target selector */}
       {tab === 'whisper' && (
-        <div style={{ padding: '4px 10px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <div style={{ padding: '4px 8px', borderTop: '1px solid #0d1e2e' }}>
           <select
             value={whisperTarget}
-            onChange={(e) => setWhisperTarget(e.target.value)}
+            onChange={(e) => setWTgt(e.target.value)}
             style={{
               width: '100%',
-              background: 'rgba(206,147,216,0.08)',
-              border: '1px solid rgba(206,147,216,0.3)',
-              borderRadius: 3,
-              color: whisperTarget ? '#ce93d8' : '#555',
-              padding: '4px 6px',
-              fontSize: 10,
-              fontFamily: 'inherit',
+              background: 'rgba(180,100,220,0.06)',
+              border: '1px solid #4422aa',
+              color: whisperTarget ? '#cc88ff' : '#334455',
+              padding: '4px 5px',
+              fontSize: 7,
+              fontFamily: FONT,
               outline: 'none',
             }}
           >
-            <option value="">— select recipient —</option>
+            <option value="">-- SELECT --</option>
             {otherPlayers.filter(p => p.alive).map(p => (
               <option key={p.id} value={p.id}>
-                {p.name} ({p.type === 'ai' ? 'AI' : 'HUMAN'})
+                {p.name} [{p.type === 'ai' ? 'AI' : 'HMN'}]
               </option>
             ))}
           </select>
@@ -162,49 +166,40 @@ export default function ChatPanel() {
       )}
 
       {/* Input row */}
-      <div style={{ display: 'flex', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      <div style={{ display: 'flex', borderTop: '1px solid #0d1e2e' }}>
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={handleKey}
           disabled={tab === 'all' ? !canChat : !canWhisper}
-          placeholder={
-            tab === 'all'
-              ? (canChat ? 'Transmit...' : 'Discussion phase only')
-              : (canWhisper ? (whisperTarget ? 'Whisper...' : 'Select recipient first') : 'Not available now')
-          }
+          placeholder={tab === 'all' ? (canChat ? '>_' : 'DISC ONLY') : (canWhisper ? '>_' : 'N/A')}
           style={{
             flex: 1,
             background: 'transparent',
             border: 'none',
             outline: 'none',
-            padding: '7px 10px',
-            fontSize: 10,
-            color: '#e0e0e0',
-            fontFamily: 'inherit',
+            padding: '6px 8px',
+            fontSize: 8,
+            color: '#7799bb',
+            fontFamily: FONT,
           }}
         />
         <button
           onClick={tab === 'all' ? sendPublic : sendWhisper}
-          disabled={
-            tab === 'all'
-              ? (!canChat || !text.trim())
-              : (!canWhisper || !text.trim() || !whisperTarget)
-          }
+          disabled={tab === 'all' ? !canChat || !text.trim() : !canWhisper || !text.trim() || !whisperTarget}
           style={{
             background: 'transparent',
             border: 'none',
-            borderLeft: '1px solid rgba(255,255,255,0.06)',
-            color: tab === 'all' ? '#00bfff' : '#ce93d8',
-            padding: '0 12px',
+            borderLeft: '1px solid #0d1e2e',
+            color: tab === 'all' ? '#00e5ff' : '#cc88ff',
+            padding: '0 10px',
             cursor: 'pointer',
-            fontSize: 10,
-            fontFamily: 'inherit',
-            opacity: (tab === 'all' ? (!canChat || !text.trim()) : (!canWhisper || !text.trim() || !whisperTarget)) ? 0.3 : 1,
+            fontSize: 7,
+            fontFamily: FONT,
           }}
         >
-          SEND
+          TX
         </button>
       </div>
     </div>
