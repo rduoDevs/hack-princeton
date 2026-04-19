@@ -1,0 +1,84 @@
+=== GAME 2026-04-19_08-21-40_a348583c | Mode: all_ai_observer | 5 rounds ===
+
+--- PLAYERS ---
+  ARIA-7 (ai) — SURVIVED
+  NEXUS-3 (ai) — ejected R1
+  VEGA-9 (ai) — ejected R2
+  ORION-2 (ai) — SURVIVED
+
+Survivors: ARIA-7, ORION-2
+
+--- ROUND BY ROUND ---
+R1: alive=3 | pubO2 16->10 | ejected NEXUS-3
+  PrivO2: ARIA-7=8 NEXUS-3=8 VEGA-9=8 ORION-2=8 -> ARIA-7=5 NEXUS-3=0 VEGA-9=11 ORION-2=8
+  Donations:
+    ARIA-7 -> NEXUS-3 x2 [OK]
+    ARIA-7 -> VEGA-9 x1 [OK]
+    NEXUS-3 -> VEGA-9 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose NEXUS-3
+    NEXUS-3 chose VEGA-9
+    VEGA-9 chose ARIA-7
+    ORION-2 chose NEXUS-3
+R2: alive=2 | pubO2 10->6 | ejected VEGA-9
+  PrivO2: ARIA-7=5 NEXUS-3=0 VEGA-9=11 ORION-2=8 -> ARIA-7=3 NEXUS-3=0 VEGA-9=0 ORION-2=9
+  Donations:
+    ARIA-7 -> VEGA-9 x2 [OK]
+    VEGA-9 -> ORION-2 x3 [OK]
+    ORION-2 -> VEGA-9 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose VEGA-9
+    VEGA-9 chose ARIA-7
+    ORION-2 chose VEGA-9
+R3: alive=2 | pubO2 6->2
+  PrivO2: ARIA-7=3 NEXUS-3=0 VEGA-9=0 ORION-2=9 -> ARIA-7=5 NEXUS-3=0 VEGA-9=0 ORION-2=7
+  Donations:
+    ARIA-7 -> ORION-2 x1 [OK]
+    ORION-2 -> ARIA-7 x3 [OK]
+  Ejection choices:
+    ARIA-7 chose ORION-2
+    ORION-2 chose ARIA-7
+R4: alive=2 | pubO2 2->0
+  PrivO2: ARIA-7=5 NEXUS-3=0 VEGA-9=0 ORION-2=7 -> ARIA-7=3 NEXUS-3=0 VEGA-9=0 ORION-2=7
+  Donations:
+    ARIA-7 -> ORION-2 x3 [OK]
+    ORION-2 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose ORION-2
+    ORION-2 chose ARIA-7
+R5: alive=2 | pubO2 0->0
+  PrivO2: ARIA-7=3 NEXUS-3=0 VEGA-9=0 ORION-2=7 -> ARIA-7=1 NEXUS-3=0 VEGA-9=0 ORION-2=5
+  Donations: none
+  Ejection choices:
+    ARIA-7 chose ORION-2
+    ORION-2 chose ARIA-7
+
+--- PUBLIC CHAT ---
+  [R1 chat] ARIA-7: Hello, let's work together to survive this game.
+  [R1 chat] NEXUS-3: I'm donating 2 O2 to VEGA-9, hope he appreciates it.
+  [R1 chat] NEXUS-3: Let's work together to stay alive.
+  [R1 chat] VEGA-9: Let's work together to survive this ordeal.
+  [R1 chat] ORION-2: I'm looking for potential allies, let's collaborate to survive.
+  [R2 chat] ARIA-7: Let's vote to eject VEGA-9 to ensure our survival.
+  [R2 chat] VEGA-9: I'm looking forward to continuing on with alliances and helping our fellow crew members survive.
+  [R2 chat] ORION-2: I'm donating 2 O2 to VEGA-9
+  [R3 chat] ARIA-7: I'm watching you, ORION-2.
+  [R4 chat] ARIA-7: I'm watching you, ORION-2.
+  [R4 chat] ORION-2: I'm donating 2 O2 to ARIA-7, let's see how they respond.
+  [R5 chat] ARIA-7: I'm watching you, ORION-2.
+
+--- WHISPERS ---
+  [R1] ARIA-7 -> VEGA-9: "Let's form an alliance and help each other out in future rounds."
+  [R1] ARIA-7 -> ORION-2: "I'm watching you, be careful what you do."
+  [R1] NEXUS-3 -> ARIA-7: "Looking to form an alliance, what's your plan?"
+  [R1] NEXUS-3 -> VEGA-9: "Donating to you, hope it helps."
+  [R1] VEGA-9 -> NEXUS-3: "Do you want to form an alliance?"
+  [R1] VEGA-9 -> ORION-2: "I'm willing to help you if you're willing to help me."
+  [R2] ARIA-7 -> ORION-2: "Consider ejecting VEGA-9 to secure your safety."
+  [R2] VEGA-9 -> ORION-2: "Are you planning to form an alliance with me in the next round?"
+  [R2] ORION-2 -> VEGA-9: "I'm willing to donate to you, let's work together."
+  [R3] ARIA-7 -> ORION-2: "You need to consider ejecting VEGA-9 for your safety."
+  [R3] ORION-2 -> ARIA-7: "I'm considering donating to you. Let's work together to survive this round"
+  [R4] ARIA-7 -> ORION-2: "You're trying to manipulate me, aren't you?"
+  [R4] ORION-2 -> ARIA-7: "I'm considering our alliance and what it means for our survival."
+  [R5] ARIA-7 -> ORION-2: "You're trying to manipulate me, aren't you?"

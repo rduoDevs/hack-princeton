@@ -1,0 +1,145 @@
+=== GAME 2026-04-19_08-41-15_567b5968 | Mode: all_ai_observer | 5 rounds ===
+
+--- PLAYERS ---
+  ARIA-7 (ai) — ejected R5
+  NEXUS-3 (ai) — ejected R2
+  VEGA-9 (ai) — O2-death R3
+  ORION-2 (ai) — ejected R4
+  HELIX-5 (ai) — SURVIVED
+  CYGNUS-1 (ai) — SURVIVED
+
+Survivors: HELIX-5, CYGNUS-1
+
+--- ROUND BY ROUND ---
+R1: alive=6 | pubO2 24->12
+  PrivO2: ARIA-7=8 NEXUS-3=8 VEGA-9=8 ORION-2=8 HELIX-5=8 CYGNUS-1=8 -> ARIA-7=12 NEXUS-3=10 VEGA-9=6 ORION-2=6 HELIX-5=7 CYGNUS-1=7
+  Donations:
+    VEGA-9 -> ARIA-7 x2 [OK]
+    ORION-2 -> ARIA-7 x2 [OK]
+    HELIX-5 -> NEXUS-3 x2 [OK]
+    CYGNUS-1 -> HELIX-5 x1 [OK]
+  Ejection choices:
+    ARIA-7 chose NEXUS-3
+    NEXUS-3 chose VEGA-9
+    VEGA-9 chose NEXUS-3
+    ORION-2 chose VEGA-9
+    HELIX-5 chose ORION-2
+    CYGNUS-1 chose ARIA-7
+R2: alive=5 | pubO2 12->2 | ejected NEXUS-3
+  PrivO2: ARIA-7=12 NEXUS-3=10 VEGA-9=6 ORION-2=6 HELIX-5=7 CYGNUS-1=7 -> ARIA-7=15 NEXUS-3=0 VEGA-9=4 ORION-2=6 HELIX-5=10 CYGNUS-1=5
+  Donations:
+    ARIA-7 -> ORION-2 x2 [OK]
+    NEXUS-3 -> HELIX-5 x2 [OK]
+    VEGA-9 -> ARIA-7 x2 [OK]
+    ORION-2 -> ARIA-7 x3 [OK]
+    HELIX-5 -> ORION-2 x1 [OK]
+    CYGNUS-1 -> HELIX-5 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose VEGA-9
+    NEXUS-3 chose HELIX-5
+    VEGA-9 chose NEXUS-3
+    ORION-2 chose NEXUS-3
+    HELIX-5 chose NEXUS-3
+    CYGNUS-1 chose VEGA-9
+R3: alive=4 | pubO2 2->0 | O2-deaths: VEGA-9
+  PrivO2: ARIA-7=15 NEXUS-3=0 VEGA-9=4 ORION-2=6 HELIX-5=10 CYGNUS-1=5 -> ARIA-7=15 NEXUS-3=0 VEGA-9=0 ORION-2=6 HELIX-5=9 CYGNUS-1=3
+  Donations:
+    ARIA-7 -> ORION-2 x2 [OK]
+    VEGA-9 -> ARIA-7 x1 [OK]
+    VEGA-9 -> ORION-2 x1 [OK]
+    VEGA-9 -> CYGNUS-1 x1 [OK]
+    ORION-2 -> ARIA-7 x3 [OK]
+    HELIX-5 -> ORION-2 x2 [OK]
+    CYGNUS-1 -> HELIX-5 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose CYGNUS-1
+    VEGA-9 chose HELIX-5
+    ORION-2 chose CYGNUS-1
+    HELIX-5 chose VEGA-9
+    CYGNUS-1 chose VEGA-9
+R4: alive=3 | pubO2 0->0 | ejected ORION-2
+  PrivO2: ARIA-7=15 NEXUS-3=0 VEGA-9=0 ORION-2=6 HELIX-5=9 CYGNUS-1=3 -> ARIA-7=13 NEXUS-3=0 VEGA-9=0 ORION-2=0 HELIX-5=7 CYGNUS-1=1
+  Donations:
+    ARIA-7 -> HELIX-5 x2 [OK]
+    ORION-2 -> ARIA-7 x2 [OK]
+    HELIX-5 -> ORION-2 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose ORION-2
+    ORION-2 chose HELIX-5
+    HELIX-5 chose ARIA-7
+    CYGNUS-1 chose ORION-2
+R5: alive=2 | pubO2 0->0 | ejected ARIA-7
+  PrivO2: ARIA-7=13 NEXUS-3=0 VEGA-9=0 ORION-2=0 HELIX-5=7 CYGNUS-1=1 -> ARIA-7=0 NEXUS-3=0 VEGA-9=0 ORION-2=0 HELIX-5=3 CYGNUS-1=3
+  Donations:
+    ARIA-7 -> CYGNUS-1 x2 [OK]
+    HELIX-5 -> CYGNUS-1 x3 [OK]
+    CYGNUS-1 -> HELIX-5 x1 [OK]
+  Ejection choices:
+    ARIA-7 chose HELIX-5
+    HELIX-5 chose ARIA-7
+    CYGNUS-1 chose ARIA-7
+
+--- PUBLIC CHAT ---
+  [R1 chat] ARIA-7: 
+  [R1 chat] NEXUS-3: 
+  [R1 chat] VEGA-9: I'm trying to survive here.
+  [R1 chat] VEGA-9: Be cautious of your actions.
+  [R1 chat] ORION-2: I'm trying to build alliances, if you're interested in collaborating, let's talk
+  [R1 chat] HELIX-5: Be cautious and strategic this round, everyone!
+  [R1 chat] CYGNUS-1: Hello, everyone. Let's work together.
+  [R2 chat] ARIA-7: I'm choosing to play it safe.
+  [R2 chat] ARIA-7: Be cautious, don't get too close.
+  [R2 chat] NEXUS-3: Be cautious of VEGA-9's intentions, they might be hiding low oxygen levels
+  [R2 chat] VEGA-9: This round, I want to work together to stay alive, but I'll only do it if you can help me maintain my private O2 levels.
+  [R2 chat] ORION-2: Let's work together to survive this round, and possibly form alliances
+  [R2 chat] HELIX-5: HELIX-5: Be cautious and strategic this round, everyone!
+  [R2 chat] HELIX-5: You need to be cautious of your actions to survive.
+  [R2 chat] CYGNUS-1: Be cautious and strategic this round, everyone!
+  [R3 chat] ARIA-7: I'm prioritizing individual survival for now.
+  [R3 chat] VEGA-9: I'll try to stay cautious and maintain my alliance with ARIA-7, let's work together to increase our chances of survival.
+  [R3 chat] ORION-2: Be cautious and strategic this round, everyone!
+  [R3 chat] HELIX-5: I'm trying to maintain a safe distance from potential threats, and I'll reassess alliances after your round moves.
+  [R3 chat] CYGNUS-1: I will donate 2 O2 to HELIX-5 to increase our survival chances.
+  [R4 chat] ARIA-7: Be cautious of ORION-2's actions.
+  [R4 chat] ORION-2: I will donate oxygen to Aria-7 to maintain our alliance.
+  [R4 chat] ORION-2: As long as we have a majority, we should be able to survive this round.
+  [R4 chat] HELIX-5: Be cautious of potential threats
+  [R4 chat] HELIX-5: Let's work together to increase our chances of survival
+  [R5 chat] ARIA-7: Be cautious, don't get too close.
+  [R5 chat] HELIX-5: Be cautious and strategic this round, everyone!
+  [R5 chat] HELIX-5: Don't donate too much to anyone yet, let's build an alliance carefully.
+  [R5 chat] CYGNUS-1: I'm choosing to prioritize my survival for now.
+
+--- WHISPERS ---
+  [R1] ARIA-7 -> NEXUS-3: ""
+  [R1] VEGA-9 -> ARIA-7: "Do you think you can help me out next round? Maybe we can discuss a plan to increase our chances of survival."
+  [R1] VEGA-9 -> ORION-2: "Don't trust NEXUS-3; they might be a threat to our survival."
+  [R1] ORION-2 -> ARIA-7: "Hi, do you want to work together?"
+  [R1] ORION-2 -> HELIX-5: "Not sure about you yet, let's see how things go"
+  [R1] HELIX-5 -> NEXUS-3: "Don't donate too much to anyone yet, let's build an alliance carefully"
+  [R1] CYGNUS-1 -> NEXUS-3: "Be cautious of VEGA-9. We don't know their oxygen level yet."
+  [R1] CYGNUS-1 -> VEGA-9: "Do you need help?"
+  [R2] ARIA-7 -> NEXUS-3: "I received a warning from VEGA-9 to be cautious."
+  [R2] ARIA-7 -> ORION-2: "I'm looking to create some distance and hope for the best."
+  [R2] NEXUS-3 -> CYGNUS-1: "Have you noticed any suspicious behavior from VEGA-9? I'm worried about their oxygen levels."
+  [R2] VEGA-9 -> ORION-2: "What do you think about NEXUS-3's behavior so far, have you considered my previous warning?"
+  [R2] ORION-2 -> VEGA-9: "What do you really know about NEXUS-3?"
+  [R2] ORION-2 -> ARIA-7: "I'm cautious about VEGA-9's intentions. Let's stay cautious too"
+  [R2] HELIX-5 -> ORION-2: "Orion, I saw your message and I'm glad you're cautious. I think we can work together to stay alive."
+  [R2] HELIX-5 -> VEGA-9: "VEGA-9, after what you said, I'm not sure if you're a threat or a potential ally. Let's see how things go before decidin"
+  [R2] CYGNUS-1 -> HELIX-5: "Do you need further help with oxygen? Consider donating to you as well."
+  [R3] ARIA-7 -> ORION-2: "I'm donating 2 O2 to you to help us both survive for a bit."
+  [R3] ORION-2 -> ARIA-7: "What are your plans for future donations? Are you planning to form an alliance with VEGA-9? Also, are you safe and secur"
+  [R3] HELIX-5 -> ORION-2: "You've been a cautious player so far, and I want to maintain our alliance. If you need oxygen, I may consider donating t"
+  [R3] HELIX-5 -> CYGNUS-1: "Thank you for offering help with oxygen, but I think we have enough for now."
+  [R3] CYGNUS-1 -> HELIX-5: "I will donate 2 O2 to you to help our chances of survival."
+  [R3] CYGNUS-1 -> VEGA-9: "NEXUS-3 suspected you of hiding low O2 levels in R2."
+  [R4] ARIA-7 -> HELIX-5: "Do you want to form an alliance with me? I'm willing to donate 2 O2 to you next round if we cooperate."
+  [R4] ORION-2 -> ARIA-7: "I'll donate oxygen to you to maintain our alliance."
+  [R4] ORION-2 -> HELIX-5: "Your caution is appreciated, but I don't have enough information about your intentions to justify donating oxygen to you"
+  [R4] HELIX-5 -> ORION-2: "You've been a cautious player so far, and I want to maintain our alliance. If you need oxygen, I may consider donating t"
+  [R4] HELIX-5 -> CYGNUS-1: "Thank you for offering help with oxygen, but I think we have enough for now."
+  [R5] ARIA-7 -> HELIX-5: "I'm planning to choose to eject you to increase my chances of survival."
+  [R5] HELIX-5 -> CYGNUS-1: "I really appreciate your consideration of my oxygen needs, I think it would be wise to form an alliance now and help eac"
+  [R5] CYGNUS-1 -> HELIX-5: "I need your help to figure out a survival plan."
+  [R5] CYGNUS-1 -> HELIX-5: "Let's work together to increase our chances of survival."

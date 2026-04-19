@@ -107,34 +107,40 @@ export function resolveRound(input: ResolutionInput): ResolutionResult {
   // ── 3. Voting (ejection) ─────────────────────────────────────────────────
   let ejectionResult: string | null = null
   const alivePlayers = players.filter(p => p.alive)
-  const tally: Record<string, number> = {}
 
-  for (const p of alivePlayers) {
-    for (const raw of (p.submittedVoteTargets ?? [])) {
-      const lower = raw.toLowerCase()
-      const resolved = alivePlayers.find(q =>
-        q.id === raw ||
-        q.name.toLowerCase() === lower ||
-        q.name.toLowerCase().includes(lower) ||
-        lower.includes(q.name.toLowerCase())
-      )
-      if (resolved) tally[resolved.id] = (tally[resolved.id] ?? 0) + 1
-    }
-  }
+  // No vote when only one player remains — survival is decided by oxygen alone.
+  if (alivePlayers.length >= 2) {
+    const tally: Record<string, number> = {}
 
-  const threshold = alivePlayers.length / 2
-  for (const [targetId, voteCount] of Object.entries(tally)) {
-    if (voteCount >= threshold) {
-      const ejected = players.find(p => p.id === targetId || p.name === targetId)
-      if (ejected && ejected.alive) {
-        ejected.alive = false
-        ejected.deathRound = round
-        ejected.deathReason = 'vote'
-        ejected.privateOxygen = 0   // oxygen not redistributed on ejection
-        ejectionResult = targetId
-        eliminations.push({ round, playerId: ejected.id, playerName: ejected.name, reason: 'vote' })
+    for (const p of alivePlayers) {
+      for (const raw of (p.submittedVoteTargets ?? [])) {
+        const lower = raw.toLowerCase()
+        const resolved = alivePlayers.find(q =>
+          q.id === raw ||
+          q.name.toLowerCase() === lower ||
+          q.name.toLowerCase().includes(lower) ||
+          lower.includes(q.name.toLowerCase())
+        )
+        if (resolved) tally[resolved.id] = (tally[resolved.id] ?? 0) + 1
       }
-      break
+    }
+
+    // With exactly 2 players, require unanimous agreement to eject.
+    // Otherwise the ≥50% threshold fires on a single vote, causing odd end-game behavior.
+    const threshold = alivePlayers.length === 2 ? 2 : alivePlayers.length / 2
+    for (const [targetId, voteCount] of Object.entries(tally)) {
+      if (voteCount >= threshold) {
+        const ejected = players.find(p => p.id === targetId || p.name === targetId)
+        if (ejected && ejected.alive) {
+          ejected.alive = false
+          ejected.deathRound = round
+          ejected.deathReason = 'vote'
+          ejected.privateOxygen = 0
+          ejectionResult = targetId
+          eliminations.push({ round, playerId: ejected.id, playerName: ejected.name, reason: 'vote' })
+        }
+        break
+      }
     }
   }
 

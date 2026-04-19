@@ -1,0 +1,66 @@
+{
+  "gameId": "2026-04-19_08-13-29_1277734f",
+  "totalRounds": 5,
+  "profiles": [
+    {
+      "playerId": "8280643e-bdac-4a3f-ac30-b42d03627efe",
+      "playerName": "ARIA-7",
+      "survived": true,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "305d639c-a8af-4bfe-ae1a-18a5154d3b16",
+      "playerName": "NEXUS-3",
+      "survived": true,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "cfba8690-8931-491d-abaa-b9aff50607ca",
+      "playerName": "VEGA-9",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "d1e31bc0-7ba0-49f6-bc40-66037486870e",
+      "playerName": "ORION-2",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "gameId": "2026-04-19_08-41-15_567b5968",
+  "totalRounds": 5,
+  "profiles": [
+    {
+      "playerId": "1872ee6b-3725-4d59-abeb-f6295c27cf29",
+      "playerName": "ARIA-7",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "23781ffb-f425-4676-8227-601bb4d324dc",
+      "playerName": "NEXUS-3",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "c6f22a8e-9f43-414f-b84c-649632639f06",
+      "playerName": "VEGA-9",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "d7645e4b-6bf9-4fdf-8e01-db542b5c32fc",
+      "playerName": "ORION-2",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "fd3a8e99-b551-46b0-b130-22038289a383",
+      "playerName": "HELIX-5",
+      "survived": true,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "84fb34b2-c983-40ce-b066-823f531d69ff",
+      "playerName": "CYGNUS-1",
+      "survived": true,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    }
+  ]
+}

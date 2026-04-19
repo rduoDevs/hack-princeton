@@ -189,6 +189,8 @@ export interface AIPlayerContext {
   alivePlayers: { id: string; name: string; type: PlayerType }[]
   deadPlayers: { name: string; deathRound: number | null; deathReason: DeathReason | null }[]
   whisperHistoryInvolving: { fromPlayerName: string; toPlayerId: string; text: string; round: number }[]
+  publicChatHistory: { round: number; playerName: string; text: string }[]
+  ownDonationHistory: { round: number; toPlayerName: string; amount: number; applied: boolean }[]
   priorRoundSummaries: RoundSummary[]
   config: {
     maxWhispersPerRound: number

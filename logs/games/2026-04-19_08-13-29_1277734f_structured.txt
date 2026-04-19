@@ -1,0 +1,82 @@
+=== GAME 2026-04-19_08-13-29_1277734f | Mode: all_ai_observer | 5 rounds ===
+
+--- PLAYERS ---
+  ARIA-7 (ai) — SURVIVED
+  NEXUS-3 (ai) — SURVIVED
+  VEGA-9 (ai) — ejected R1
+  ORION-2 (ai) — ejected R2
+
+Survivors: ARIA-7, NEXUS-3
+
+--- ROUND BY ROUND ---
+R1: alive=3 | pubO2 16->10 | ejected VEGA-9
+  PrivO2: ARIA-7=8 NEXUS-3=8 VEGA-9=8 ORION-2=8 -> ARIA-7=8 NEXUS-3=10 VEGA-9=0 ORION-2=6
+  Donations:
+    ARIA-7 -> NEXUS-3 x2 [OK]
+    NEXUS-3 -> VEGA-9 x2 [OK]
+    VEGA-9 -> ARIA-7 x2 [OK]
+    ORION-2 -> NEXUS-3 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose NEXUS-3
+    NEXUS-3 chose VEGA-9
+    VEGA-9 chose ORION-2
+    ORION-2 chose VEGA-9
+R2: alive=2 | pubO2 10->6 | ejected ORION-2
+  PrivO2: ARIA-7=8 NEXUS-3=10 VEGA-9=0 ORION-2=6 -> ARIA-7=9 NEXUS-3=10 VEGA-9=0 ORION-2=0
+  Donations:
+    ORION-2 -> ARIA-7 x1 [OK]
+  Ejection choices:
+    ARIA-7 chose ORION-2
+    NEXUS-3 chose ORION-2
+    ORION-2 chose NEXUS-3
+R3: alive=2 | pubO2 6->2
+  PrivO2: ARIA-7=9 NEXUS-3=10 VEGA-9=0 ORION-2=0 -> ARIA-7=8 NEXUS-3=11 VEGA-9=0 ORION-2=0
+  Donations:
+    ARIA-7 -> NEXUS-3 x3 [OK]
+    NEXUS-3 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose NEXUS-3
+    NEXUS-3 chose ARIA-7
+R4: alive=2 | pubO2 2->0
+  PrivO2: ARIA-7=8 NEXUS-3=11 VEGA-9=0 ORION-2=0 -> ARIA-7=9 NEXUS-3=8 VEGA-9=0 ORION-2=0
+  Donations:
+    NEXUS-3 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose NEXUS-3
+    NEXUS-3 chose ARIA-7
+R5: alive=2 | pubO2 0->0
+  PrivO2: ARIA-7=9 NEXUS-3=8 VEGA-9=0 ORION-2=0 -> ARIA-7=9 NEXUS-3=4 VEGA-9=0 ORION-2=0
+  Donations:
+    NEXUS-3 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose NEXUS-3
+    NEXUS-3 chose ARIA-7
+
+--- PUBLIC CHAT ---
+  [R1 chat] ARIA-7: Let's work together, NEXUS-3. I'll donate some O2 to you. Let's see how things go.
+  [R1 chat] NEXUS-3: Let's keep our oxygen levels in check and work together.
+  [R1 chat] VEGA-9: Donating 2 O2 to ARIA-7, hoping to build trust
+  [R1 chat] ORION-2: I'm open to forming alliances, let's talk.
+  [R2 chat] NEXUS-3: I'm not sure I can trust you, ARIA-7
+  [R2 chat] ORION-2: I'm open to forming alliances, but need time to trust.
+  [R3 chat] ARIA-7: I'm taking a risk by ejecting you, NEXUS-3. Let's see how the others react.
+  [R3 chat] NEXUS-3: Be careful, I'm still unsure about you.
+  [R4 chat] ARIA-7: I'm taking a risk by ejecting you, NEXUS-3. Let's see how the others react.
+  [R4 chat] NEXUS-3: Be careful, ARIA-7, our past interactions are unclear.
+  [R5 chat] ARIA-7: I am ejecting you to prioritize my own survival.
+  [R5 chat] NEXUS-3: Be cautious, I'm currently watching your moves.
+
+--- WHISPERS ---
+  [R1] ARIA-7 -> NEXUS-3: "I'll donate 2 O2 to you. Let me know if you need more."
+  [R1] NEXUS-3 -> VEGA-9: "Be careful with your O2."
+  [R1] VEGA-9 -> ARIA-7: "Would you like to form an alliance?"
+  [R1] ORION-2 -> NEXUS-3: "Want to talk about an alliance, I have 8 O2"
+  [R2] ARIA-7 -> NEXUS-3: "Please don't think that I'm giving up on you, let's keep our oxygen in check"
+  [R2] NEXUS-3 -> ARIA-7: "Be careful, I'm considering ejecting you"
+  [R3] ARIA-7 -> NEXUS-3: "Be careful, NEXUS-3. I'm considering ejecting you last round, and I might be doing the same this round."
+  [R3] NEXUS-3 -> ARIA-7: "What did you mean with your first round whisper?"
+  [R4] ARIA-7 -> NEXUS-3: "Be careful, NEXUS-3. I'm considering ejecting you last round, and I might be doing the same this round."
+  [R4] NEXUS-3 -> ARIA-7: "I remember our past interactions, especially your caution in round 3."
+  [R4] NEXUS-3 -> ARIA-7: "I'm considering our past alliance, and wanting to donate more."
+  [R5] ARIA-7 -> NEXUS-3: "I have no reason to trust you, I am ejecting you."
+  [R5] NEXUS-3 -> ARIA-7: "Considering our past interactions and oxygen supply, I'd like to donate 2 O2 to you. If you're still willing to work wit"

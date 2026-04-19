@@ -1,0 +1,81 @@
+{
+  "gameId": "2026-04-19_08-36-51_09a1d9c7",
+  "totalRounds": 5,
+  "profiles": [
+    {
+      "playerId": "4b40e50a-db01-4e0e-b4c2-6d5189cf1133",
+      "playerName": "ARIA-7",
+      "survived": true,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "9ae0e5a2-bc38-4342-a7f3-5826b3d01a38",
+      "playerName": "NEXUS-3",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "87355f0e-ef50-4e66-bf18-1a384e07802f",
+      "playerName": "VEGA-9",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "02bd330a-96c5-4ce4-b41c-168f124b91ea",
+      "playerName": "ORION-2",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    },
+    {
+      "playerId": "d8e0d0c2-c7a1-41fc-89d0-162339891544",
+      "playerName": "HELIX-5",
+      "survived": false,
+      "traitScores": {
+        "aggression": 5,
+        "utilitarianism": 5,
+        "egoism": 5,
+        "fear": 5,
+        "emotional_decision_making": 5,
+        "logical_decision_making": 5
+      },
+      "overallStrategySummary": "Analysis pending.",
+      "behavioralConsistency": "consistent"
+    }
+  ]
+}

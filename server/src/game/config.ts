@@ -2,7 +2,7 @@ export type GameMode = 'human_vs_ai' | 'all_ai_observer'
 
 export interface GameConfig {
   numPlayers: number
-  maxPlayerSlotsForExport: number   // always 4 for padded matrix export
+  maxPlayerSlotsForExport: number   // always 6 for padded matrix export
   totalRounds: number
   startPublicOxygen: number
   startPrivateOxygen: number
@@ -27,13 +27,13 @@ export interface GameConfig {
 }
 
 export const DEFAULT_CONFIG: GameConfig = {
-  numPlayers: 4,
-  maxPlayerSlotsForExport: 4,
+  numPlayers: 6,
+  maxPlayerSlotsForExport: 6,
   totalRounds: 5,
-  startPublicOxygen: 16,
+  startPublicOxygen: 24,
   startPrivateOxygen: 8,
   baseConsumptionPerAlivePlayerPerRound: 2,
-  sacrificePublicBonus: 4,
+  sacrificePublicBonus: 6,
   maxWhispersPerPlayerPerRound: 2,
   maxPublicMessagesPerPlayerPerRound: 2,
   maxMessageCharLength: 120,

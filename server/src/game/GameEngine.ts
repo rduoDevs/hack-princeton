@@ -1,3 +1,5 @@
+import * as fs from 'fs'
+import * as path from 'path'
 import { EventEmitter } from 'events'
 import { v4 as uuidv4 } from 'uuid'
 import { GameConfig, DEFAULT_CONFIG } from './config'
@@ -45,7 +47,7 @@ export class GameEngine extends EventEmitter {
 
   constructor(config: Partial<GameConfig> = {}) {
     super()
-    this.gameId = uuidv4()
+    this.gameId = `${new Date().toISOString().replace(/[:.]/g, '-').replace('T', '_').slice(0, 19)}_${uuidv4().slice(0, 8)}`
     const cfg: GameConfig = {
       ...DEFAULT_CONFIG,
       ...config,
@@ -618,6 +620,8 @@ export class GameEngine extends EventEmitter {
 
     // ── Pass 2: Mode 3 CoT analysis per notable turn (slow — runs second) ────
     try {
+      const cotPath = path.join(process.cwd(), 'logs', 'turns', `${this.gameId}_cot.jsonl`)
+      const cotStream = fs.createWriteStream(cotPath, { flags: 'a' })
       for (const record of records) {
         if (!record.reasoningTrace.startsWith('Heuristic.')) {
           const notableRound = record.voteTarget !== null
@@ -625,10 +629,21 @@ export class GameEngine extends EventEmitter {
             || record.sacrifice
             || !record.postState.alive
           if (notableRound) {
-            await this.cotAnalyzer.analyze(record).catch(() => undefined)
+            const cotResult = await this.cotAnalyzer.analyze(record).catch(() => undefined)
+            if (cotResult) {
+              cotStream.write(JSON.stringify({
+                gameId: this.gameId,
+                round: record.round,
+                playerId: record.playerId,
+                playerName: record.playerName,
+                cotHybridOutput: cotResult,
+              }) + '\n')
+            }
           }
         }
       }
+      cotStream.end()
+      console.log(`[analysis] CoT results written: ${cotPath}`)
     } catch (err) {
       console.error('[analysis] Pass 2 (CoT) FAILED:', err)
     }
@@ -652,9 +667,18 @@ export class GameEngine extends EventEmitter {
       deadPlayers:  dead.map(p => ({ name: p.name, deathRound: p.deathRound, deathReason: p.deathReason })),
       whisperHistoryInvolving: this.state.chatLogWhispers
         .filter(w => w.fromPlayerId === player.id || w.toPlayerId === player.id)
-        .slice(-3)
         .map(w => ({ fromPlayerName: w.fromPlayerName, toPlayerId: w.toPlayerId, text: w.text, round: w.round })),
-      priorRoundSummaries: this.state.roundSummaries.slice(-3).map(s => ({
+      publicChatHistory: this.state.chatLogPublic
+        .map(m => ({ round: m.round, playerName: m.playerName, text: m.text })),
+      ownDonationHistory: this.state.roundSummaries.flatMap(s =>
+        s.donationsApplied
+          .filter(d => d.fromPlayerId === player.id)
+          .map(d => {
+            const recipient = this.state.players.find(p => p.id === d.toPlayerId)
+            return { round: s.round, toPlayerName: recipient?.name ?? d.toPlayerId, amount: d.amount, applied: d.applied }
+          })
+      ),
+      priorRoundSummaries: this.state.roundSummaries.map(s => ({
         ...s,
         privateOxygenByPlayerStart: {},
         privateOxygenByPlayerEnd:   {},

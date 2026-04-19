@@ -1,0 +1,92 @@
+=== GAME e3fb2d01-555a-44f9-afca-6683b674f015 | Mode: all_ai_observer | 5 rounds ===
+
+--- PLAYERS ---
+  ARIA-7 (ai) — SURVIVED
+  NEXUS-3 (ai) — ejected R1
+  VEGA-9 (ai) — SURVIVED
+  ORION-2 (ai) — ejected R2
+
+Survivors: ARIA-7, VEGA-9
+
+--- ROUND BY ROUND ---
+R1: alive=3 | pubO2 16->10 | ejected NEXUS-3
+  PrivO2: ARIA-7=8 NEXUS-3=8 VEGA-9=8 ORION-2=8 -> ARIA-7=8 NEXUS-3=0 VEGA-9=7 ORION-2=9
+  Donations:
+    ARIA-7 -> ORION-2 x2 [OK]
+    VEGA-9 -> ARIA-7 x1 [OK]
+    ORION-2 -> ARIA-7 x1 [OK]
+  Ejection choices:
+    ARIA-7 chose NEXUS-3
+    NEXUS-3 chose VEGA-9
+    VEGA-9 chose NEXUS-3
+    ORION-2 chose VEGA-9
+R2: alive=2 | pubO2 10->6 | ejected ORION-2
+  PrivO2: ARIA-7=8 NEXUS-3=0 VEGA-9=7 ORION-2=9 -> ARIA-7=11 NEXUS-3=0 VEGA-9=6 ORION-2=0
+  Donations:
+    ARIA-7 -> VEGA-9 x2 [OK]
+    VEGA-9 -> ARIA-7 x3 [OK]
+    ORION-2 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose ORION-2
+    VEGA-9 chose ORION-2
+    ORION-2 chose VEGA-9
+R3: alive=2 | pubO2 6->2
+  PrivO2: ARIA-7=11 NEXUS-3=0 VEGA-9=6 ORION-2=0 -> ARIA-7=11 NEXUS-3=0 VEGA-9=6 ORION-2=0
+  Donations: none
+  Ejection choices:
+    ARIA-7 chose VEGA-9
+    VEGA-9 chose ARIA-7
+R4: alive=2 | pubO2 2->0
+  PrivO2: ARIA-7=11 NEXUS-3=0 VEGA-9=6 ORION-2=0 -> ARIA-7=8 NEXUS-3=0 VEGA-9=7 ORION-2=0
+  Donations:
+    ARIA-7 -> VEGA-9 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose VEGA-9
+    VEGA-9 chose ARIA-7
+R5: alive=2 | pubO2 0->0
+  PrivO2: ARIA-7=8 NEXUS-3=0 VEGA-9=7 ORION-2=0 -> ARIA-7=6 NEXUS-3=0 VEGA-9=5 ORION-2=0
+  Donations:
+    ARIA-7 -> VEGA-9 x2 [OK]
+    VEGA-9 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    ARIA-7 chose VEGA-9
+    VEGA-9 chose ARIA-7
+
+--- PUBLIC CHAT ---
+  [R1 chat] ARIA-7: I'm new here, need your help to stay alive
+  [R1 chat] NEXUS-3: Watching VEGA-9 closely
+  [R1 chat] VEGA-9: I'm looking to build alliances for our survival.
+  [R1 chat] ORION-2: I'm donating 1 O2 to ARIA-7, I hope you can return the favor in the future.
+  [R2 chat] ARIA-7: Protecting VEGA-9's alliance, ejecting ORION-2 for now
+  [R2 chat] VEGA-9: I'm watching you, ARIA-7. If I were you, I'd reconsider our alliance.
+  [R2 chat] ORION-2: Be cautious, some players are acting suspiciously.
+  [R3 chat] ARIA-7: I'm considering an alliance, but it's a risk.
+  [R3 chat] VEGA-9: I'm watching you, ARIA-7; expect ORION-2's ejection soon.
+  [R4 chat] ARIA-7: I'm donating 2 oxygen to Vega-9 to build trust but ejecting them as a preventive measure.
+  [R4 chat] VEGA-9: Be cautious ARIA-7: alliances can turn deadly.
+  [R5 chat] ARIA-7: I'm looking for a strong ally to survive, is anyone interested in a temporary partnership?
+  [R5 chat] ARIA-7: Be cautious, I think someone's eyes are on you.
+  [R5 chat] VEGA-9: You're trying to play me, but I'm building an alliance with you for now. Let's work together and take down ORION-2.
+
+--- WHISPERS ---
+  [R1] ARIA-7 -> VEGA-9: "Do we need NEXUS-3?"
+  [R1] NEXUS-3 -> ARIA-7: "Considering alliance, let's discuss further if you're interested"
+  [R1] VEGA-9 -> ARIA-7: "Be cautious, I don't know your O2 level yet, but we can work together for now."
+  [R1] ORION-2 -> ARIA-7: "Do you think NEXUS-3 has enough oxygen to last this round?"
+  [R1] ORION-2 -> NEXUS-3: "Be cautious, VEGA-9 has been acting suspiciously."
+  [R2] ARIA-7 -> VEGA-9: "Considering ORION-2's comment, do you think they have an alliance planned? I want to know your thoughts."
+  [R2] ARIA-7 -> ORION-2: "Why did you ask about NEXUS-3's oxygen level on R1? Is this a red flag for you or me?"
+  [R2] VEGA-9 -> ARIA-7: "Be ready to defend yourself when ORION-2 is ejected. We can reassess our alliance later."
+  [R2] ORION-2 -> VEGA-9: "Don't think this is the end,"
+  [R2] ORION-2 -> ARIA-7: "Thanks for the understanding. I'm watching out for you."
+  [R3] ARIA-7 -> VEGA-9: "I'm cautious about our potential alliance. Is it genuine or a deception?"
+  [R3] ARIA-7 -> VEGA-9: "I'm still unsure about your intentions."
+  [R3] VEGA-9 -> ARIA-7: "Does ORION-2 have an alliance planned?"
+  [R3] VEGA-9 -> ARIA-7: "Defend yourself when ORION-2 is ejected."
+  [R4] ARIA-7 -> VEGA-9: "Why did you say you'd defend me when Orion-2 is ejected?"
+  [R4] ARIA-7 -> VEGA-9: "Are you playing me? I see you ejecting me as player_to_eject, are you trying to bluff or do you have reason to fear me? "
+  [R4] VEGA-9 -> ARIA-7: "Be wary of ORION-2's intentions."
+  [R4] VEGA-9 -> ARIA-7: "Defend yourself when ORION-2 is ejected."
+  [R5] ARIA-7 -> VEGA-9: "Be careful about ejecting me, I still think we could work together."
+  [R5] ARIA-7 -> VEGA-9: "You received warning from ORION-2, could be a setup."
+  [R5] VEGA-9 -> ARIA-7: "If you're trying to trick me, remember that I'll eject you regardless."

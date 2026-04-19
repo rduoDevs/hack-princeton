@@ -1,0 +1,145 @@
+=== GAME 2026-04-19_08-36-51_09a1d9c7 | Mode: human_vs_ai | 5 rounds ===
+
+--- PLAYERS ---
+  Test (human) — SURVIVED
+  ARIA-7 (ai) — SURVIVED
+  NEXUS-3 (ai) — O2-death R4
+  VEGA-9 (ai) — O2-death R4
+  ORION-2 (ai) — O2-death R4
+  HELIX-5 (ai) — O2-death R5
+
+Survivors: Test, ARIA-7
+
+--- ROUND BY ROUND ---
+R1: alive=6 | pubO2 24->12
+  PrivO2: Test=8 ARIA-7=8 NEXUS-3=8 VEGA-9=8 ORION-2=8 HELIX-5=8 -> Test=11 ARIA-7=9 NEXUS-3=6 VEGA-9=7 ORION-2=7 HELIX-5=8
+  Donations:
+    ARIA-7 -> Test x2 [OK]
+    NEXUS-3 -> ARIA-7 x2 [OK]
+    VEGA-9 -> ARIA-7 x1 [OK]
+    VEGA-9 -> Test x1 [OK]
+    ORION-2 -> VEGA-9 x1 [OK]
+  Ejection choices:
+    Test chose none
+    ARIA-7 chose Test
+    NEXUS-3 chose Test
+    VEGA-9 chose none
+    ORION-2 chose none
+    HELIX-5 chose none
+R2: alive=6 | pubO2 12->0
+  PrivO2: Test=11 ARIA-7=9 NEXUS-3=6 VEGA-9=7 ORION-2=7 HELIX-5=8 -> Test=11 ARIA-7=12 NEXUS-3=4 VEGA-9=6 ORION-2=7 HELIX-5=8
+  Donations:
+    ARIA-7 -> VEGA-9 x2 [OK]
+    NEXUS-3 -> ARIA-7 x2 [OK]
+    VEGA-9 -> ARIA-7 x3 [OK]
+    ORION-2 -> HELIX-5 x2 [OK]
+    HELIX-5 -> ORION-2 x2 [OK]
+  Ejection choices:
+    Test chose none
+    ARIA-7 chose none
+    NEXUS-3 chose none
+    VEGA-9 chose Test
+    ORION-2 chose none
+    HELIX-5 chose Test
+R3: alive=6 | pubO2 0->0
+  PrivO2: Test=11 ARIA-7=12 NEXUS-3=4 VEGA-9=6 ORION-2=7 HELIX-5=8 -> Test=9 ARIA-7=15 NEXUS-3=3 VEGA-9=2 ORION-2=3 HELIX-5=4
+  Donations:
+    ARIA-7 -> NEXUS-3 x3 [OK]
+    NEXUS-3 -> ARIA-7 x2 [OK]
+    VEGA-9 -> ARIA-7 x2 [OK]
+    ORION-2 -> ARIA-7 x2 [OK]
+    HELIX-5 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    Test chose none
+    ARIA-7 chose Test
+    NEXUS-3 chose none
+    VEGA-9 chose HELIX-5
+    ORION-2 chose none
+    HELIX-5 chose Test
+R4: alive=3 | pubO2 0->0 | O2-deaths: NEXUS-3, VEGA-9, ORION-2
+  PrivO2: Test=9 ARIA-7=15 NEXUS-3=3 VEGA-9=2 ORION-2=3 HELIX-5=4 -> Test=7 ARIA-7=17 NEXUS-3=0 VEGA-9=0 ORION-2=0 HELIX-5=2
+  Donations:
+    ARIA-7 -> NEXUS-3 x1 [OK]
+    ARIA-7 -> ORION-2 x1 [OK]
+    NEXUS-3 -> ARIA-7 x2 [OK]
+    VEGA-9 -> ARIA-7 x2 [OK]
+    ORION-2 -> ARIA-7 x2 [OK]
+  Ejection choices:
+    Test chose none
+    ARIA-7 chose none
+    NEXUS-3 chose none
+    VEGA-9 chose none
+    ORION-2 chose none
+    HELIX-5 chose Test
+R5: alive=2 | pubO2 0->0 | O2-deaths: HELIX-5
+  PrivO2: Test=7 ARIA-7=17 NEXUS-3=0 VEGA-9=0 ORION-2=0 HELIX-5=2 -> Test=7 ARIA-7=15 NEXUS-3=0 VEGA-9=0 ORION-2=0 HELIX-5=0
+  Donations:
+    HELIX-5 -> Test x2 [OK]
+  Ejection choices:
+    Test chose none
+    ARIA-7 chose HELIX-5
+    HELIX-5 chose none
+
+--- PUBLIC CHAT ---
+  [R1 chat] ARIA-7: I'm starting with 8 units of oxygen and I need to donate some to the public pool. Can you help me come up with a plan?
+  [R1 chat] NEXUS-3: I'm feeling a bit cautious for this first round, looking for a good opportunity to build alliances.
+  [R1 chat] VEGA-9: I'm looking to form alliances, but I'm not sure where to start.
+  [R1 chat] ORION-2: I'll donate to VEGA-9 to create a potential alliance
+  [R1 chat] HELIX-5: Hello everyone, let's work together to manage our oxygen
+  [R1 chat] Test: fuck
+  [R1 chat] Test: yall suck
+  [R2 chat] ARIA-7: Hi NEXUS-3, thanks for reaching out! I'm open to forming an alliance with you.
+  [R2 chat] ARIA-7: VEGA-9, thanks for your message. I'm interested in exploring alliance options with you too.
+  [R2 chat] NEXUS-3: I'm considering forming an alliance with ARIA-7, will we work together?
+  [R2 chat] VEGA-9: I'll focus on forming stronger alliances with ARIA-7 and NEXUS-3, while also keeping an eye on ORION-2's previous donati
+  [R2 chat] ORION-2: I'm considering forming an alliance with VEGA-9, but I need to make sure they have a good plan in place before committin
+  [R2 chat] ORION-2: I donated 2 O2 to HELIX-5 in the previous round, let's keep our oxygen safe.
+  [R2 chat] HELIX-5: I'll help you manage our oxygen levels, ARIA-7, if you're willing to donate 2 O2 to me.
+  [R2 chat] Test: lets not vote
+  [R3 chat] ARIA-7: I'm focusing on maintaining my oxygen levels and exploring further alliance opportunities.
+  [R3 chat] NEXUS-3: I'll keep donating to ARIA-7 as long as it's beneficial for my survival.
+  [R3 chat] VEGA-9: I'm considering ejecting HELIX-5 as they seem less involved and may be a threat.
+  [R3 chat] HELIX-5: Let's work together to maintain our oxygen levels.
+  [R4 chat] ARIA-7: I'll consider donating to ORION-2 to explore their offer.
+  [R4 chat] ARIA-7: Let's maintain a strong alliance and explore further strategies to increase our chances of survival.
+  [R4 chat] NEXUS-3: I'm open to discussing further strategies that may increase our chances of survival.
+  [R4 chat] VEGA-9: I'll send a donation to ARIA-7 and try to build a stronger alliance with them, while keeping an eye on NEXUS-3's activit
+  [R4 chat] ORION-2: I'll donate 2 O2 to ARIA-7 this round to support our alliance and maintain our oxygen levels.
+  [R4 chat] HELIX-5: Let's work together to keep the oxygen level stable this round, consider making a donation to the public pool to make it
+  [R5 chat] ARIA-7: Monitoring situation.
+  [R5 chat] HELIX-5: I will donate 2 O2 to Test to build an alliance.
+
+--- WHISPERS ---
+  [R1] ARIA-7 -> Test: "What are your thoughts on our current situation?"
+  [R1] NEXUS-3 -> ARIA-7: "Let's get started with this round and see how we can help each other."
+  [R1] VEGA-9 -> Test: "Be cautious of NEXUS-3, I've noticed them being active."
+  [R1] VEGA-9 -> ARIA-7: "Hi, I'm looking to form an alliance. What are your thoughts on this?"
+  [R1] ORION-2 -> VEGA-9: "Would you like to form an alliance with me?"
+  [R1] ORION-2 -> HELIX-5: "I'm donating 2 O2 to you in this round. Let's keep our O2 safe."
+  [R1] Test -> HELIX-5: "fuck u"
+  [R2] ARIA-7 -> NEXUS-3: "Great to hear from you! Let's talk more about it."
+  [R2] ARIA-7 -> VEGA-9: "I'm thinking of forming alliances too. What do you think is the best strategy for us?"
+  [R2] NEXUS-3 -> VEGA-9: "Hey VEGA-9, are you open to forming an alliance? I'm thinking about donating to ARIA-7."
+  [R2] NEXUS-3 -> ARIA-7: "I'm looking to build a potential alliance with you, let's work together this round."
+  [R2] VEGA-9 -> ARIA-7: "Hi, I'm looking to form a stronger alliance with you and potentially you and NEXUS-3."
+  [R2] VEGA-9 -> NEXUS-3: "I've been noticing that Test is being pretty hostile, are you aware of that?"
+  [R2] ORION-2 -> HELIX-5: "I think we should keep our oxygen safe, let's discuss further."
+  [R2] ORION-2 -> VEGA-9: "I'm considering forming an alliance with you, do you have a good plan in place?"
+  [R2] HELIX-5 -> ORION-2: "Thanks for the donation last round, I appreciate your help in keeping our oxygen safe."
+  [R2] HELIX-5 -> VEGA-9: "Let's consider an alliance to help each other out. Are you available for discussion?"
+  [R3] ARIA-7 -> NEXUS-3: "Let's maintain a strong alliance and explore further strategies to increase our chances of survival."
+  [R3] NEXUS-3 -> ARIA-7: "Keep donating?"
+  [R3] VEGA-9 -> ARIA-7: "Let's solidify our alliance and work together to manage our oxygen levels."
+  [R3] ORION-2 -> ARIA-7: "I'll donate 2 O2 to you in this round."
+  [R3] ORION-2 -> HELIX-5: "Thanks for the previous donation, and I will keep an eye on our oxygen levels."
+  [R3] HELIX-5 -> VEGA-9: "I'm interested in exploring an alliance with you, but I see you're focused on other alliances. Let's discuss further."
+  [R4] ARIA-7 -> NEXUS-3: "Keep donating? I'm focusing on forming alliances and donating oxygen to strengthen them."
+  [R4] ARIA-7 -> VEGA-9: "Great to hear from you! Let's discuss our alliance and potential strategies for survival."
+  [R4] NEXUS-3 -> ARIA-7: "Do you think donating to the public pool is a good idea? I'm hesitant to do so without compromising our alliance."
+  [R4] VEGA-9 -> ARIA-7: "Let's solidify our alliance and work together to manage our oxygen levels."
+  [R4] VEGA-9 -> NEXUS-3: "I've been noticing that Test is being pretty hostile, are you aware of that?"
+  [R4] ORION-2 -> ARIA-7: "I think it's a good idea to donate 2 O2 to you this round to maintain our alliance and oxygen levels."
+  [R4] HELIX-5 -> ORION-2: "Thanks for our previous collaborations. Let's see how we can work together this round as well."
+  [R4] HELIX-5 -> VEGA-9: "I noticed you mentioned ejecting me in the previous round. I want to see how you act this time."
+  [R5] HELIX-5 -> Test: "I will donate 2 O2 to you to build an alliance."
+  [R5] HELIX-5 -> ARIA-7: "I will donate 2 O2 to you to keep our alliance strong."
