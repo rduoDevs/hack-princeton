@@ -20,7 +20,7 @@ To run the entire process locally on your machine, you can follow the following 
 - Download a copy of this repository
 - Initialize **2** separate terminals: 1 for the server, 1 for the client.
 - For the server terminal, enter: `npx ts-node server/src/index.ts`
-- For the client terminal, enter `cd client`, followed by `npx ts-node server/src/index.ts`.
+- For the client terminal, enter `cd client`, followed by `npm run dev`.
 - Load in the game at your forwarded port! Enjoy!
 
 Made with love at HackPrinceton 2026.
