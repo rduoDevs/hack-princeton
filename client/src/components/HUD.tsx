@@ -1,86 +1,95 @@
 import { useGameStore } from '../store/gameStore'
-import ResourceBars from './ResourceBars'
-import PlayerCards from './PlayerCards'
 import ChatPanel from './ChatPanel'
-import ActionMenu from './ActionMenu'
 import PhaseTimer from './PhaseTimer'
+import ActionMenu from './ActionMenu'
+import PlayerCards from './PlayerCards'
 import GameOver from './GameOver'
-import StoryAlert from './StoryAlert'
+import ResolutionBanner from './ResolutionBanner'
 
 const FONT = "'Press Start 2P', monospace"
-const SCANLINE = 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px)'
+const SCAN = 'repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.1) 3px,rgba(0,0,0,0.1) 4px)'
+
+function OxygenBar({ label, value, max, color }: { label: string; value: number; max: number; color: string }) {
+  const segs   = 12
+  const filled = Math.round((Math.max(0, value) / Math.max(1, max)) * segs)
+  return (
+    <div style={{ marginBottom: 8 }}>
+      <div style={{ fontSize: 6, color, letterSpacing: 2, marginBottom: 3 }}>{label}</div>
+      <div style={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+        {Array.from({ length: segs }).map((_, i) => (
+          <div key={i} style={{
+            width: 10, height: 12,
+            background: i < filled ? color : 'rgba(255,255,255,0.06)',
+            boxShadow: i < filled ? `0 0 4px ${color}88` : 'none',
+          }} />
+        ))}
+        <span style={{ fontSize: 8, color, marginLeft: 6, fontFamily: FONT }}>{value}</span>
+      </div>
+    </div>
+  )
+}
 
 export default function HUD() {
-  const gameState = useGameStore((s) => s.gameState)
-  const phase = gameState?.phase ?? 'lobby'
-  const round = gameState?.round ?? 0
+  const phase      = useGameStore((s) => s.phaseInfo?.phase ?? s.gameState?.phase)
+  const round      = useGameStore((s) => s.gameState?.round ?? 0)
+  const publicOxy  = useGameStore((s) => s.gameState?.publicOxygen ?? 0)
+  const privateOxy = useGameStore((s) => s.privateOxygen ?? 0)
+  const players    = useGameStore((s) => s.gameState?.players ?? [])
+  const outcome    = useGameStore((s) => s.gameState?.outcome)
+
+  if (phase === 'over' || outcome) return <GameOver />
+  if (phase === 'lobby') return null
 
   const phaseColor =
-    phase === 'discussion'  ? '#00e5ff'
-    : phase === 'action'    ? '#ffd700'
-    : phase === 'resolution'? '#ff8833'
-    : '#556677'
+    phase === 'whisper' ? '#cc88ff'
+    : phase === 'chat'     ? '#00e5ff'
+    : phase === 'donation' ? '#ffd700'
+    : phase === 'voting'   ? '#ff8833'
+    : '#888'
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        pointerEvents: 'none',
-        zIndex: 10,
-        fontFamily: FONT,
-      }}
-    >
+    <>
       {/* Top bar */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0, left: 0, right: 0,
-          height: 44,
-          background: 'rgba(4,4,16,0.96)',
-          borderBottom: '2px solid #001533',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          padding: '0 14px',
-          backgroundImage: SCANLINE,
-        }}
-      >
-        <div style={{ fontSize: 10, color: '#00e5ff', letterSpacing: 1, textShadow: '0 0 12px rgba(0,229,255,0.7)' }}>
-          HAIL MARY
-        </div>
-        <div style={{ display: 'flex', gap: 20, alignItems: 'center' }}>
-          <div style={{ fontSize: 8, color: '#334455' }}>
-            RND&nbsp;<span style={{ color: '#e0e0e0', fontSize: 12 }}>{round}</span>
-          </div>
-          <div
-            style={{
-              fontSize: 8,
-              color: phaseColor,
-              border: `2px solid ${phaseColor}`,
-              padding: '3px 8px',
-              textShadow: `0 0 8px ${phaseColor}66`,
-            }}
-          >
-            {phase.toUpperCase()}
-          </div>
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: 44,
+        background: 'rgba(4,4,18,0.94)', borderBottom: '2px solid #001533',
+        display: 'flex', alignItems: 'center', padding: '0 16px', gap: 20,
+        fontFamily: FONT, backgroundImage: SCAN, zIndex: 10,
+      }}>
+        <span style={{ fontSize: 7, color: '#00e5ff', letterSpacing: 2 }}>HAIL MARY</span>
+        <span style={{ fontSize: 6, color: '#223344' }}>RND {round}</span>
+        <span style={{ fontSize: 6, color: phaseColor, letterSpacing: 1 }}>
+          [{phase?.toUpperCase()}]
+        </span>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 20 }}>
+          <span style={{ fontSize: 6, color: '#00e5ff' }}>
+            PUB O₂: <strong style={{ color: '#00ffaa' }}>{publicOxy}</strong>
+          </span>
+          <span style={{ fontSize: 6, color: '#cc88ff' }}>
+            PRIV O₂: <strong style={{ color: '#ff88cc' }}>{privateOxy}</strong>
+          </span>
+          <span style={{ fontSize: 6, color: '#334455' }}>
+            ALIVE: {players.filter(p => p.alive).length}/{players.length}
+          </span>
         </div>
       </div>
 
-      {/* Story event banner */}
-      {gameState?.storyAlert && (
-        <StoryAlert key={gameState.round} alert={gameState.storyAlert} />
-      )}
+      {/* Oxygen bars */}
+      <div style={{
+        position: 'absolute', top: 56, left: 10,
+        background: 'rgba(4,4,16,0.96)', border: '2px solid #001533',
+        borderLeft: '2px solid #00e5ff', padding: '10px 14px',
+        fontFamily: FONT, backgroundImage: SCAN, zIndex: 10,
+      }}>
+        <OxygenBar label="PUBLIC O₂" value={publicOxy} max={40} color="#00ffaa" />
+        <OxygenBar label="MY PRIVATE O₂" value={privateOxy} max={16} color="#ff88cc" />
+      </div>
 
-      <ResourceBars />
       <PlayerCards />
-
-      <div style={{ pointerEvents: 'all' }}>
-        <ChatPanel />
-        <ActionMenu />
-      </div>
+      <ActionMenu />
+      <ChatPanel />
       <PhaseTimer />
-      <GameOver />
-    </div>
+      <ResolutionBanner />
+    </>
   )
 }

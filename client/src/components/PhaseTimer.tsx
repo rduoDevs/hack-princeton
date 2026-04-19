@@ -20,9 +20,11 @@ export default function PhaseTimer() {
   if (!phaseInfo) return null
 
   const phaseColor =
-    phaseInfo.phase === 'discussion' ? '#00e5ff'
-    : phaseInfo.phase === 'action'   ? '#ffd700'
-    : '#ff8833'
+    phaseInfo.phase === 'whisper'   ? '#cc88ff'
+    : phaseInfo.phase === 'chat'    ? '#00e5ff'
+    : phaseInfo.phase === 'donation'? '#ffd700'
+    : phaseInfo.phase === 'voting'  ? '#ff8833'
+    : '#888888'
 
   const urgent = timeLeft <= 10
   const displayColor = urgent ? '#ff3333' : phaseColor

@@ -9,7 +9,7 @@ const SCANLINE = 'repeating-linear-gradient(0deg, transparent, transparent 3px, 
 export default function ChatPanel() {
   const messages          = useGameStore((s) => s.messages)
   const whispers          = useGameStore((s) => s.whispers)
-  const phase             = useGameStore((s) => s.gameState?.phase)
+  const phase             = useGameStore((s) => s.phaseInfo?.phase ?? s.gameState?.phase)
   const localId           = useGameStore((s) => s.localPlayerId)
   const players           = useGameStore((s) => s.gameState?.players ?? [])
   const activeWhispTgt    = useGameStore((s) => s.activeWhisperTarget)
@@ -20,8 +20,8 @@ export default function ChatPanel() {
   const [whisperTarget, setWTgt]  = useState('')
   const bottomRef                 = useRef<HTMLDivElement>(null)
 
-  const canChat    = phase === 'discussion'
-  const canWhisper = phase === 'discussion' || phase === 'action'
+  const canChat    = phase === 'chat'
+  const canWhisper = phase === 'whisper' || phase === 'chat'
 
   useEffect(() => {
     if (activeWhispTgt) {

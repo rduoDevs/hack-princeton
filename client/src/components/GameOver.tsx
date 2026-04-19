@@ -9,12 +9,11 @@ export default function GameOver() {
   const localPlayerId = useGameStore((s) => s.localPlayerId)
   const reset        = useGameStore((s) => s.reset)
 
-  if (gameState?.phase !== 'over') return null
-  if (!gameState.round || gameState.round < 1) return null
-  if (localPlayerId && !gameState.players.some(p => p.id === localPlayerId)) return null
+  if (gameState?.phase !== 'over' && !gameState?.outcome) return null
 
-  const outcome   = gameState.outcome
-  const isWin     = outcome?.result === 'win'
+  const outcome   = gameState?.outcome
+  const survivors = outcome?.survivors ?? []
+  const isWin     = survivors.length > 0
   const mainColor = isWin ? '#00ff88' : '#ff3333'
 
   const handlePlayAgain = () => {
@@ -69,17 +68,17 @@ export default function GameOver() {
           {isWin ? 'SURVIVED' : 'LOST'}
         </div>
 
-        {outcome?.message && (
-          <div style={{ fontSize: 8, color: '#778899', marginBottom: 22, lineHeight: 2.2, maxWidth: 420 }}>
-            {outcome.message}
+        {outcome?.totalOxygenRemaining !== undefined && (
+          <div style={{ fontSize: 7, color: '#778899', marginBottom: 16 }}>
+            O₂ remaining: {outcome.totalOxygenRemaining} | round {outcome.finalRound}
           </div>
         )}
 
-        {outcome?.survivors && outcome.survivors.length > 0 && (
+        {survivors.length > 0 && (
           <div style={{ marginBottom: 26 }}>
             <div style={{ fontSize: 7, color: '#334455', letterSpacing: 2, marginBottom: 8 }}>SURVIVORS</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
-              {outcome.survivors.map((name, i) => (
+              {survivors.map((name, i) => (
                 <span
                   key={i}
                   style={{
