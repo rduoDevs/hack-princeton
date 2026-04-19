@@ -11,10 +11,12 @@ export default function GameOver() {
 
   if (gameState?.phase !== 'over' && !gameState?.outcome) return null
 
-  const outcome   = gameState?.outcome
-  const survivors = outcome?.survivors ?? []
-  const isWin     = survivors.length > 0
-  const mainColor = isWin ? '#00ff88' : '#ff3333'
+  const outcome    = gameState?.outcome
+  const survivors  = outcome?.survivors ?? []
+  const localName  = gameState?.players.find(p => p.id === localPlayerId)?.name
+  const isObserver = !localPlayerId || localPlayerId === '__observer__'
+  const iSurvived  = isObserver ? survivors.length > 0 : !!(localName && survivors.includes(localName))
+  const mainColor  = iSurvived ? '#00ff88' : '#ff3333'
 
   const handlePlayAgain = () => {
     reset()
@@ -54,19 +56,24 @@ export default function GameOver() {
         ))}
 
         <div style={{ fontSize: 8, color: mainColor, letterSpacing: 3, marginBottom: 18 }}>
-          MISSION {isWin ? 'COMPLETE' : 'FAILED'}
+          {isObserver ? 'EXPERIMENT COMPLETE' : iSurvived ? 'MISSION COMPLETE' : 'MISSION FAILED'}
         </div>
         <div
           style={{
             fontSize: 26,
             color: mainColor,
-            marginBottom: 26,
+            marginBottom: 12,
             textShadow: `0 0 24px ${mainColor}88`,
             letterSpacing: 2,
           }}
         >
-          {isWin ? 'SURVIVED' : 'LOST'}
+          {isObserver ? (survivors.length > 0 ? 'SURVIVORS' : 'EXTINCTION') : iSurvived ? 'SURVIVED' : 'YOU DIED'}
         </div>
+        {!isObserver && !iSurvived && survivors.length > 0 && (
+          <div style={{ fontSize: 7, color: '#556677', marginBottom: 14, letterSpacing: 1 }}>
+            {survivors.length} crew member{survivors.length > 1 ? 's' : ''} made it without you
+          </div>
+        )}
 
         {outcome?.totalOxygenRemaining !== undefined && (
           <div style={{ fontSize: 7, color: '#778899', marginBottom: 16 }}>
@@ -76,22 +83,27 @@ export default function GameOver() {
 
         {survivors.length > 0 && (
           <div style={{ marginBottom: 26 }}>
-            <div style={{ fontSize: 7, color: '#334455', letterSpacing: 2, marginBottom: 8 }}>SURVIVORS</div>
+            <div style={{ fontSize: 7, color: '#334455', letterSpacing: 2, marginBottom: 8 }}>
+              {!isObserver && !iSurvived ? 'OUTLIVED YOU' : 'SURVIVORS'}
+            </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, justifyContent: 'center' }}>
-              {survivors.map((name, i) => (
-                <span
-                  key={i}
-                  style={{
-                    background: 'rgba(0,255,136,0.07)',
-                    border: '2px solid #00ff8844',
-                    color: '#00ff88',
-                    padding: '3px 9px',
-                    fontSize: 7,
-                  }}
-                >
-                  {name}
-                </span>
-              ))}
+              {survivors.map((name, i) => {
+                const isMe = name === localName
+                return (
+                  <span
+                    key={i}
+                    style={{
+                      background: isMe ? 'rgba(0,255,136,0.12)' : 'rgba(255,136,51,0.07)',
+                      border: `2px solid ${isMe ? '#00ff8844' : '#ff883344'}`,
+                      color: isMe ? '#00ff88' : '#ff8833',
+                      padding: '3px 9px',
+                      fontSize: 7,
+                    }}
+                  >
+                    {name}{isMe ? ' ★' : ''}
+                  </span>
+                )
+              })}
             </div>
           </div>
         )}

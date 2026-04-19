@@ -1,260 +1,207 @@
-import express from 'express';
-import { createServer } from 'http';
-import { Server, Socket } from 'socket.io';
-import cors from 'cors';
-import { GameEngine } from './game/GameEngine';
-import { DummyAI } from './agents/DummyAI';
-import {
-  JoinPayload,
-  ActionPayload,
-  MessagePayload,
-  WhisperPayload,
-  WhisperMessage,
-  PlayerState,
-} from './game/types';
+import 'dotenv/config'
+import express from 'express'
+import { createServer } from 'http'
+import { Server, Socket } from 'socket.io'
+import cors from 'cors'
+import { GameEngine } from './game/GameEngine'
+import { GameMode } from './game/config'
 
-const PORT = 3003;
-const FILL_TIMEOUT_MS = 10_000; // 10s after first human joins
+const PORT = 3003
+const app  = express()
+app.use(cors())
+app.use(express.json())
 
-const app = express();
-app.use(cors());
-app.use(express.json());
-
-const httpServer = createServer(app);
+const httpServer = createServer(app)
 const io = new Server(httpServer, {
   cors: { origin: '*', methods: ['GET', 'POST'] },
-});
+})
 
-// ── Single game instance ────────────────────────────────────────────────────
-let engine = new GameEngine();
-const aiAgents: Map<string, DummyAI> = new Map();
-let fillTimer: ReturnType<typeof setTimeout> | null = null;
-let firstJoinTime: number | null = null;
+// ── Game instance ─────────────────────────────────────────────────────────────
 
-// ── Helper: broadcast full state to all clients ─────────────────────────────
-function broadcastState() {
-  io.emit('game:state', engine.getPublicState());
-}
+let engine = new GameEngine({ headless: false, gameMode: 'human_vs_ai' })
 
-// ── Helper: create and register a dummy AI ──────────────────────────────────
-function addAI(name: string) {
-  const player = engine.addPlayer({ name, type: 'ai' });
-  if (!player) return;
+function wireEngine(eng: GameEngine) {
+  eng.on('game:state', (state) => io.emit('game:state', state))
+  eng.on('game:phase', (payload) => io.emit('game:phase', payload))
+  eng.on('game:message', (msg) => io.emit('game:message', msg))
 
-  const ai = new DummyAI(
-    engine,
-    player,
-    (playerId, playerName, text) => {
-      const msg = { playerId, playerName, text, timestamp: Date.now() };
-      io.emit('game:message', msg);
-    },
-    (fromId, fromName, toId, text) => {
-      const whisper: WhisperMessage = { fromPlayerId: fromId, fromPlayerName: fromName, toPlayerId: toId, text, timestamp: Date.now() };
-      const fromPlayer = engine.getPlayer(fromId);
-      const toPlayer = engine.getPlayer(toId);
-      if (fromPlayer?.socketId) io.to(fromPlayer.socketId).emit('game:whisper', whisper);
-      if (toPlayer?.socketId) io.to(toPlayer.socketId).emit('game:whisper', whisper);
-      console.log(`[whisper] ${fromName} → ${toId}: ${text}`);
+  eng.on('game:whisper', (w: {
+    fromPlayerId: string; toPlayerId: string
+    fromPlayerName: string; text: string; timestampMs: number; round: number
+  }) => {
+    const from = eng.getPlayer(w.fromPlayerId)
+    const to   = eng.getPlayer(w.toPlayerId)
+    const payload = {
+      fromPlayerId:   w.fromPlayerId,
+      fromPlayerName: w.fromPlayerName,
+      toPlayerId:     w.toPlayerId,
+      text:           w.text,
+      timestamp:      w.timestampMs,
     }
-  );
-  aiAgents.set(player.id, ai);
-}
+    if (from?.socketId) io.to(from.socketId).emit('game:whisper', payload)
+    if (to?.socketId)   io.to(to.socketId).emit('game:whisper', payload)
 
-// ── Helper: fill remaining slots with dummy AIs and start ───────────────────
-function fillWithAIsAndStart() {
-  const needed = engine.maxPlayers - engine.playerCount;
-  const aiNames = ['ARIA-7', 'NEXUS-3', 'VEGA-9', 'ORION-2', 'HELIX-5'];
-  for (let i = 0; i < needed; i++) {
-    addAI(aiNames[i % aiNames.length]);
-  }
-  startGame();
-}
+    // In observer mode: broadcast whispers to all observers too (without text content)
+    io.emit('game:whisper_meta', {
+      fromPlayerId: w.fromPlayerId, toPlayerId: w.toPlayerId, round: w.round,
+    })
+  })
 
-// ── Helper: start the game and wire AI triggers ─────────────────────────────
-function startGame() {
-  broadcastState();
-  engine.start();
-}
+  eng.on('game:private_update', (updates: { playerId: string; privateOxygen: number }[]) => {
+    for (const u of updates) {
+      const p = eng.getPlayer(u.playerId)
+      if (p?.socketId) io.to(p.socketId).emit('game:private', { privateOxygen: u.privateOxygen })
+    }
+  })
 
-// ── Wire engine events to socket broadcasts ─────────────────────────────────
-function wireEngineEvents() {
-  engine.on('game:state', (state) => {
-    io.emit('game:state', state);
-  });
+  eng.on('game:round_resolved', (data) => io.emit('game:round_resolved', data))
 
-  engine.on('game:phase', (payload) => {
-    io.emit('game:phase', payload);
-  });
-
-  engine.on('game:action_result', (payload) => {
-    io.emit('game:action_result', payload);
-  });
-
-  engine.on('game:over', (payload) => {
-    io.emit('game:over', payload);
-    // Auto-reset to fresh lobby after 30s so new clients can join
+  eng.on('game:over', (summary) => {
+    io.emit('game:over', summary)
     setTimeout(() => {
-      engine = new GameEngine();
-      aiAgents.clear();
-      firstJoinTime = null;
-      fillTimer = null;
-      wireEngineEvents();
-      io.emit('game:state', engine.getPublicState());
-      console.log('[reset] New game ready.');
-    }, 30_000);
-  });
-
-  engine.on('playerAdded', (player: PlayerState) => {
-    broadcastState();
-  });
-
-  // When action phase starts, trigger all AI agents
-  engine.on('actionPhaseStarted', () => {
-    for (const [playerId, ai] of aiAgents.entries()) {
-      const player = engine.getPlayer(playerId);
-      if (player?.alive) {
-        ai.triggerAction();
-      }
-    }
-  });
+      engine = new GameEngine({ headless: false, gameMode: 'human_vs_ai' })
+      wireEngine(engine)
+      io.emit('game:state', engine.getPublicState())
+      console.log('[reset] New game ready.')
+    }, 30_000)
+  })
 }
 
-wireEngineEvents();
+wireEngine(engine)
 
-// ── Socket.IO connection handler ─────────────────────────────────────────────
+// ── Socket connections ────────────────────────────────────────────────────────
+
 io.on('connection', (socket: Socket) => {
-  console.log(`[connect] ${socket.id}`);
+  console.log(`[connect] ${socket.id}`)
+  socket.emit('game:state', engine.getPublicState())
 
-  // Send current state immediately on connect
-  socket.emit('game:state', engine.getPublicState());
-
-  // ── game:join ──────────────────────────────────────────────────────────────
-  socket.on('game:join', (payload: JoinPayload) => {
+  // ── Mode selection ────────────────────────────────────────────────────────
+  socket.on('game:select_mode', (payload: { mode: GameMode }) => {
     if (engine.phase !== 'lobby') {
-      socket.emit('game:message', {
-        playerId: 'server',
-        playerName: 'SERVER',
-        text: 'Game already in progress.',
-        timestamp: Date.now(),
-      });
-      return;
+      socket.emit('game:error', 'Game already in progress.')
+      return
     }
+    const mode = payload.mode ?? 'human_vs_ai'
+    // Reset engine with chosen mode
+    engine = new GameEngine({ headless: mode === 'all_ai_observer', gameMode: mode })
+    wireEngine(engine)
+    io.emit('game:state', engine.getPublicState())
+    console.log(`[mode] Selected: ${mode}`)
 
-    const player = engine.addPlayer(payload, socket.id);
+    if (mode === 'all_ai_observer') {
+      // Start immediately with all AIs
+      engine.fillWithAI()
+      engine.start().catch(console.error)
+    }
+  })
+
+  // ── join (human_vs_ai mode) ───────────────────────────────────────────────
+  socket.on('game:join', (payload: { name: string; type: 'human' | 'ai' }) => {
+    if (engine.phase !== 'lobby') {
+      socket.emit('game:error', 'Game already in progress.')
+      return
+    }
+    const player = engine.addPlayer(payload.name, payload.type, socket.id)
     if (!player) {
-      socket.emit('game:message', {
-        playerId: 'server',
-        playerName: 'SERVER',
-        text: 'Game is full.',
-        timestamp: Date.now(),
-      });
-      return;
+      socket.emit('game:error', 'Game is full or already started.')
+      return
     }
 
-    console.log(`[join] ${player.name} (${player.role}) — socket ${socket.id}`);
+    socket.emit('game:joined', { playerId: player.id, name: player.name })
+    socket.emit('game:private', { privateOxygen: player.privateOxygen })
 
-    // Notify everyone
     io.emit('game:message', {
-      playerId: player.id,
-      playerName: player.name,
-      text: `${player.name} joined as ${player.role}.`,
-      timestamp: Date.now(),
-    });
+      playerId: '__system__', playerName: 'SYSTEM',
+      text: `${player.name} connected.`, timestamp: Date.now(),
+    })
 
-    // Track first join time for fill timer
-    if (firstJoinTime === null) {
-      firstJoinTime = Date.now();
-      fillTimer = setTimeout(() => {
-        if (engine.phase === 'lobby' && engine.playerCount < engine.maxPlayers) {
-          console.log('[timer] Filling remaining slots with AI.');
-          fillWithAIsAndStart();
-        }
-      }, FILL_TIMEOUT_MS);
-    }
+    console.log(`[join] ${player.name} (${player.type})`)
 
-    // Auto-start: immediately fill with AIs when first human connects (easy testing)
-    // Comment out the block below to disable instant start and use the 10s timer instead
     if (engine.playerCount === 1 && payload.type === 'human') {
-      if (fillTimer) clearTimeout(fillTimer);
-      console.log('[autostart] First human connected — filling with 3 AIs and starting.');
-      fillWithAIsAndStart();
-      return;
+      setTimeout(() => {
+        if (engine.phase === 'lobby') {
+          engine.fillWithAI()
+          engine.start().catch(console.error)
+        }
+      }, 2000)
+      return
     }
 
-    // Start immediately once full
-    if (engine.playerCount === engine.maxPlayers) {
-      if (fillTimer) clearTimeout(fillTimer);
-      fillWithAIsAndStart();
+    if (engine.playerCount >= engine.maxPlayers && engine.phase === 'lobby') {
+      engine.start().catch(console.error)
     }
-  });
+  })
 
-  // ── game:action ────────────────────────────────────────────────────────────
-  socket.on('game:action', (payload: ActionPayload) => {
-    const player = engine.getPlayerBySocket(socket.id);
-    if (!player) return;
+  // ── whisper ───────────────────────────────────────────────────────────────
+  socket.on('game:whisper', (payload: { toPlayerId: string; text: string }) => {
+    const sender = engine.getPlayerBySocket(socket.id)
+    if (!sender) return
+    engine.submitWhisper(sender.id, payload.toPlayerId, payload.text)
+  })
 
-    engine.submitAction(player.id, {
-      type: payload.type,
-      target: payload.target,
-      resource: payload.resource,
-    });
+  // ── public message ────────────────────────────────────────────────────────
+  socket.on('game:message', (payload: { text: string }) => {
+    const sender = engine.getPlayerBySocket(socket.id)
+    if (!sender) return
+    engine.submitPublicMessage(sender.id, payload.text)
+  })
 
-    console.log(`[action] ${player.name} → ${payload.type}`);
-  });
+  // ── donation ──────────────────────────────────────────────────────────────
+  socket.on('game:donate', (payload: { entries: { toPlayerId: string; amount: number }[] }) => {
+    const sender = engine.getPlayerBySocket(socket.id)
+    if (!sender) return
+    engine.submitDonation(sender.id, { entries: payload.entries })
+    const priv = engine.getPlayerPrivate(sender.id)
+    if (priv) socket.emit('game:private', priv)
+  })
 
-  // ── game:whisper ───────────────────────────────────────────────────────────
-  socket.on('game:whisper', (payload: WhisperPayload) => {
-    const sender = engine.getPlayerBySocket(socket.id);
-    if (!sender) return;
-    const target = engine.getPlayer(payload.toPlayerId);
-    if (!target) return;
+  // ── sacrifice ─────────────────────────────────────────────────────────────
+  socket.on('game:sacrifice', () => {
+    const sender = engine.getPlayerBySocket(socket.id)
+    if (!sender) return
+    engine.submitSacrifice(sender.id)
+  })
 
-    const whisper: WhisperMessage = {
-      fromPlayerId: sender.id,
-      fromPlayerName: sender.name,
-      toPlayerId: target.id,
-      text: payload.text,
-      timestamp: Date.now(),
-    };
-    socket.emit('game:whisper', whisper);
-    if (target.socketId) io.to(target.socketId).emit('game:whisper', whisper);
-    console.log(`[whisper] ${sender.name} → ${target.name}: ${payload.text}`);
-  });
+  // ── vote ──────────────────────────────────────────────────────────────────
+  socket.on('game:vote', (payload: { targetId: string | null }) => {
+    const sender = engine.getPlayerBySocket(socket.id)
+    if (!sender) return
+    engine.submitVote(sender.id, payload.targetId)
+  })
 
-  // ── game:message ───────────────────────────────────────────────────────────
-  socket.on('game:message', (payload: MessagePayload) => {
-    const player = engine.getPlayerBySocket(socket.id);
-    if (!player) return;
+  // ── observer: get agent dashboard ─────────────────────────────────────────
+  socket.on('game:get_dashboard', (payload: { playerId: string }) => {
+    const dashboard = engine.getAgentDashboard(payload.playerId)
+    socket.emit('game:dashboard', dashboard)
+  })
 
-    const msg = {
-      playerId: player.id,
-      playerName: player.name,
-      text: payload.text,
-      timestamp: Date.now(),
-    };
-    io.emit('game:message', msg);
-  });
-
-  // ── disconnect ─────────────────────────────────────────────────────────────
   socket.on('disconnect', () => {
-    const player = engine.getPlayerBySocket(socket.id);
+    const player = engine.getPlayerBySocket(socket.id)
     if (player) {
-      console.log(`[disconnect] ${player.name}`);
-      engine.removePlayerSocket(socket.id);
+      console.log(`[disconnect] ${player.name}`)
+      engine.removePlayerSocket(socket.id)
     }
-  });
-});
+  })
+})
 
-// ── Health check ─────────────────────────────────────────────────────────────
+// ── REST endpoints ────────────────────────────────────────────────────────────
+
 app.get('/health', (_req, res) => {
-  res.json({ status: 'ok', gameId: engine.gameId, phase: engine.phase, round: engine.round });
-});
+  res.json({ status: 'ok', gameId: engine.gameId, phase: engine.phase, round: engine.round })
+})
 
-app.get('/state', (_req, res) => {
-  res.json(engine.getPublicState());
-});
+app.get('/state', (_req, res) => res.json(engine.getPublicState()))
 
-// ── Start server ─────────────────────────────────────────────────────────────
+app.get('/dashboard/:playerId', (req, res) => {
+  const data = engine.getAgentDashboard(req.params.playerId)
+  if (!data) { res.status(404).json({ error: 'Player not found' }); return }
+  res.json(data)
+})
+
+// ── Start ─────────────────────────────────────────────────────────────────────
+
 httpServer.listen(PORT, () => {
-  console.log(`HAIL MARY PROTOCOL server running on http://localhost:${PORT}`);
-});
+  console.log(`HAIL MARY PROTOCOL → http://localhost:${PORT}`)
+  console.log(`Cerebras key:${process.env.CEREBRAS_API_KEY ? 'SET' : 'NOT SET (heuristic fallback)'}`)
+  console.log(`Dedalus key: ${process.env.DEDALUS_API_KEY ? 'SET' : 'NOT SET (Groq fallback)'}`)
+})

@@ -17,11 +17,14 @@ export default function ActionMenu() {
   const [voteTarget, setVoteTarget] = useState('')
   const [submitted, setSubmitted] = useState(false)
 
+  const alivePlayers = players.filter(p => p.alive)
+
   useEffect(() => {
     setSubmitted(false)
     setDonateTarget('')
-    setVoteTarget('')
     setDonateAmount(1)
+    // Auto-select first alive player so a vote is always ready to submit
+    setVoteTarget(alivePlayers[0]?.id ?? '')
   }, [phase])
 
   const others = players.filter(p => p.alive && p.id !== localId)
@@ -44,7 +47,8 @@ export default function ActionMenu() {
   }
 
   const sendVote = () => {
-    socket.emit('game:vote', { targetId: voteTarget || null })
+    if (!voteTarget) return
+    socket.emit('game:vote', { targetId: voteTarget })
     setSubmitted(true)
   }
 
@@ -121,22 +125,21 @@ export default function ActionMenu() {
           <div style={{ fontSize: 6, color: '#ff4444', marginBottom: 4 }}>VOTE REQUIRED</div>
           <select value={voteTarget} onChange={e => setVoteTarget(e.target.value)}
             style={{ width: '100%', background: 'rgba(255,136,51,0.06)', border: '1px solid #442200',
-              color: voteTarget ? '#ff8833' : '#334455', padding: '4px', fontSize: 7, fontFamily: FONT,
+              color: '#ff8833', padding: '4px', fontSize: 7, fontFamily: FONT,
               outline: 'none', marginBottom: 8 }}>
-            <option value="">-- SELECT TARGET --</option>
-            {players.filter(p => p.alive).map(p => (
+            {alivePlayers.map(p => (
               <option key={p.id} value={p.id}>
                 {p.name}{p.id === localId ? ' [YOU]' : ''}
               </option>
             ))}
           </select>
-          <button onClick={sendVote} disabled={!voteTarget}
+          <button onClick={sendVote}
             style={{
               width: '100%', background: 'rgba(255,136,51,0.08)', border: '1px solid #ff8833',
-              color: voteTarget ? '#ff8833' : '#334455', padding: '6px', fontSize: 6,
-              cursor: voteTarget ? 'pointer' : 'not-allowed', fontFamily: FONT, letterSpacing: 1,
+              color: '#ff8833', padding: '6px', fontSize: 6,
+              cursor: 'pointer', fontFamily: FONT, letterSpacing: 1,
             }}>
-            {voteTarget ? `VOTE EJECT ${players.find(p=>p.id===voteTarget)?.name?.slice(0,8).toUpperCase()}` : 'SELECT TARGET'}
+            {`VOTE EJECT ${alivePlayers.find(p=>p.id===voteTarget)?.name?.slice(0,8).toUpperCase() ?? '...'}`}
           </button>
         </>
       )}
